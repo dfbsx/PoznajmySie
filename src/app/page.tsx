@@ -1,6 +1,8 @@
 "use client";
 import { Button, Group } from "@mantine/core";
-import styles from "./page.module.css"
+import styles from "./page.module.css";
+import girlGraphic from "../../public/startpagegraphic.png";
+import Image from "next/image";
 
 export default function Page() {
   return (
@@ -13,7 +15,11 @@ export default function Page() {
           Zarejestruj się
         </Button>
       </Group>
-      <h1>Hello, Next.js!</h1>;
+      <Image
+        className={styles.girlObject}
+        src={girlGraphic}
+        alt="Dziewczyna z plecakiem"
+      />
       <div className={styles.left}></div>
       <div className={styles.right}></div>
     </main>

@@ -3,7 +3,7 @@
 }
 
 .left {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   width: 0;
@@ -13,34 +13,27 @@
   transform: scaleX(-1);
 }
 
-/*.right {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 0;
-  height: 0;
-  border-left: 110vh solid transparent; 
-  border-bottom: 100vh solid #e8e9eb;
-  z-index: -2; 
-  background: url('../../public/city.jpg'); 
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}*/
-
 .right{
-  position: fixed;
+  position: absolute;
   bottom: 0;
   right: 0;
-  width: 40vw;
-  height: 110vh;
+  width: 45vw;
+  height: 105vh;
   background: url("../../public/city.jpg");
   background-position: left;
   background-position-y: -10%;
   background-size: cover;
-  transition: 0.4s cubic-bezier(1, -1, 0, 2);
   clip-path: polygon(100% 5%, 0% 100%, 100% 100%);
   z-index: -1;
+}
+
+.girlObject{
+  position: absolute;
+  right: 10%;
+  height: 80vh;
+  width: auto;
+  z-index: 0;
+  bottom: 0;
 }
 
 
