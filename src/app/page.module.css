@@ -1,11 +1,48 @@
 .main {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
   min-height: 100vh;
 }
+
+.left {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 100vh solid transparent; /* Szerokość lewego boku trójkąta */
+  border-bottom: 55vh solid #e8e9eb; /* Wysokość trójkąta i kolor tła */
+  transform: scaleX(-1);
+}
+
+/*.right {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-left: 110vh solid transparent; 
+  border-bottom: 100vh solid #e8e9eb;
+  z-index: -2; 
+  background: url('../../public/city.jpg'); 
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}*/
+
+.right{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 40vw;
+  height: 110vh;
+  background: url("../../public/city.jpg");
+  background-position: left;
+  background-position-y: -10%;
+  background-size: cover;
+  transition: 0.4s cubic-bezier(1, -1, 0, 2);
+  clip-path: polygon(100% 5%, 0% 100%, 100% 100%);
+  z-index: -1;
+}
+
 
 .description {
   display: inherit;
@@ -97,7 +134,7 @@
 
 .center::before,
 .center::after {
-  content: '';
+  content: "";
   left: 50%;
   position: absolute;
   filter: blur(45px);
