@@ -1,0 +1,39 @@
+.mainLayout{
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+.columnLayout{
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100vh;
+}
+
+.loginImage{
+    display: flex;
+    flex:1;
+    background: url("../../../public/login.jpg");
+    background-size: cover;
+    background-position: right;
+}
+
+.loginForm{
+    display: flex;
+    flex:1;
+    background-color: #FFFFFD;
+}
+
+.buttons{
+    position: absolute;
+    right: 0;
+    padding: 24px;
+}
+
+.formLayout{
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 40%;
+}

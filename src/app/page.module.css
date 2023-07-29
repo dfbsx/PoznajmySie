@@ -126,3 +126,7 @@ letter-spacing: 0.36px;
   transform: translate(0, -50%);
   z-index: 1;
 }
+
+.buttons{
+  padding: 24px;
+}

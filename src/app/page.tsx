@@ -9,7 +9,7 @@ export default function Page() {
   const router = useRouter();
   return (
     <main>
-      <Group position="right" spacing="md">
+      <Group position="right" spacing="md" className={styles.buttons}>
         <Button
           variant="subtle"
           color="dark"
@@ -28,7 +28,6 @@ export default function Page() {
       </Group>
       <Flex
         className={styles.siteDescription}
-        gap="xs"
         align="center"
         direction="column"
         wrap="wrap"

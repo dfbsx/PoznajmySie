@@ -1,0 +1,58 @@
+.mainLayout{
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+.columnLayout{
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100vh;
+}
+
+.loginImage{
+    display: flex;
+    flex:1;
+    background: url("../../../public/register1.jpg");
+    background-size: cover;
+    background-position: left;
+}
+
+.loginImagept2{
+    display: flex;
+    flex:1;
+    background: url("../../../public/register2.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.loginForm{
+    display: flex;
+    flex:1;
+    background-color: #FFFFFD;
+}
+
+.buttons{
+    position: absolute;
+    right: 0;
+    padding: 24px;
+}
+
+.formLayout{
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 40%;
+}
+
+.text{
+    display: flex;
+    align-self:normal;
+    margin-left: 25%;
+    flex-direction: column;
+}
+
+.headerText{
+    margin-bottom: -10px;
+}
