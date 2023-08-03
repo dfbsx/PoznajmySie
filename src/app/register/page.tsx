@@ -3,7 +3,7 @@ import { Button, Flex, Group, PasswordInput, TextInput } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import styles from "../register/page.module.css";
 import { useState } from "react";
-import { useForm } from "@mantine/form";
+import { matches, useForm } from "@mantine/form";
 import { register } from "@/crud/register";
 import { authenticate } from "../signalRActions/actions";
 
@@ -15,7 +15,7 @@ export default function Login() {
     email: string;
     username: string;
     password: string;
-    repeatedPassword: string;
+    reapetedPassword: string;
     bio: string;
     city: string;
     uni: string;
@@ -26,7 +26,7 @@ export default function Login() {
     email: "",
     username: "",
     password: "",
-    repeatedPassword: "",
+    reapetedPassword: "",
     bio: "",
     city: "",
     uni: "",
@@ -42,37 +42,40 @@ export default function Login() {
         /^\S+@\S+$/.test(value) ? null : "Niepoprawny format adresu e-mail",
       username: (value) =>
         value.length < 4 ? "Login powinien zawierać co najmniej 4 znaki" : null,
-      password: (value) =>
-        value.length < 8 ? "Hasło powinno zawierać co najmniej 8 znaków" : null,
-      repeatedPassword: (value, values) =>
+        password: (value) =>
+        !/^.*(?=.{8,})(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).*$/g.test(value)
+          ? "Hasło powinno zawierać co najmniej 8 znaków, jedną dużą literę, jedną cyfrę i jeden znak specjalny"
+          : null,
+      reapetedPassword: (value, values) =>
         value !== values.password ? "Podane hasła się różnią" : null,
     },
   });
+  
 
-  const handleRegister = () => { 
-    const data = form.values;
+  const handleRegister = (values: RegisterForm) => {
     setRegisterData({
-      email: data.email,
-      username: data.username,
-      password: data.password,
-      repeatedPassword: data.repeatedPassword,
+      email: values.email,
+      username: values.username,
+      password: values.password,
+      reapetedPassword: values.reapetedPassword,
       bio: registerData.bio,
       city: registerData.city,
       uni: registerData.uni,
       major: registerData.major,
       gender: registerData.gender,
     });
-    register(registerData)
+    register(values)
     .then((resp)=>{
         console.log("Resp",resp)
-        //authenticate(resp.data.userName,resp.data.token)
-        //router.push("home")
+        authenticate(resp.data.userName,resp.data.token)
+        router.push("home")
         console.log("register data",registerData)
     })
     .catch((error)=>{
         alert(error.response.data.title?error.response.data.title:"Wystąpił nieznany błąd")
     })
-  }
+  };
+  
 
   const [nextStep, setNextStep] = useState(false);
   return (
@@ -140,7 +143,7 @@ export default function Login() {
                 size="md"
                 radius="xs"
                 withAsterisk
-                {...form.getInputProps('repeatedPassword')}
+                {...form.getInputProps('reapetedPassword')}
               />
               <Button
                 color="dark"
@@ -167,7 +170,7 @@ export default function Login() {
               <h1 className={styles.headerText}>Powiedz coś o sobie</h1>
               <p>Aby lepiej można było Cię poznać</p>
             </div>
-            <form className={styles.formLayout}>
+            <form className={styles.formLayout} onSubmit={form.onSubmit((values) => handleRegister(values))}>
               <TextInput
                 placeholder="Lubię jazdę na rowerze"
                 label="Bio"
@@ -208,7 +211,7 @@ export default function Login() {
                 withAsterisk
                 {...form.getInputProps('gender')}
               />
-              <Button color="dark" radius="xs" size="md" onClick={handleRegister}>
+              <Button color="dark" radius="xs" size="md"  type="submit">
                 Zarejestruj
               </Button>
             </form>
