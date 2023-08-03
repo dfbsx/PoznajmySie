@@ -28,6 +28,7 @@ export default function Login() {
     password: "",
   });
   const form = useForm<LoginForm>({
+    validateInputOnChange: true,
     validate: {
       username: (value) =>
         value.length < 4 ? "Login powinien zawierać co najmniej 4 znaki" : null,
