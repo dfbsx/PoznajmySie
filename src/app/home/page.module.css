@@ -1,0 +1,51 @@
+.header {
+  border-bottom: 1px solid #f1f1f1;
+  background: #fcfcfc;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back {
+  background: #fffffd;
+}
+
+.messagesBox {
+  display: flex;
+  flex: 1;
+  border-radius: 3px;
+  background: #fcfcfc;
+  color: #000;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+
+.messageField {
+  display: flex;
+  flex: 2.3;
+}
+
+.userDescription {
+  display: flex;
+  flex: 1;
+  border-radius: 3px;
+  background: #fcfcfc;
+}
+
+.input {
+  border-radius: 3px;
+  background: #fffffd;
+  box-shadow: 0px 2px 70px 0px rgba(0, 0, 0, 0.1);
+  padding: 1px;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  color: #303030;
+}
