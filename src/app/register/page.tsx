@@ -5,9 +5,10 @@ import styles from "../register/page.module.css";
 import { useState } from "react";
 import { matches, useForm } from "@mantine/form";
 import { register } from "@/crud/register";
-import { authenticate } from "../signalRActions/actions";
+import { useUserStore } from "../store/zustand"
 
 export default function Login() {
+  const {authenticate} = useUserStore();
   const router = useRouter();
   const [isRegisterError, setIsRegisterError] = useState(false);
   const [registerError, setRegisterError] = useState("");

@@ -53,6 +53,7 @@
 }
 
 .flip > div > div {
+  
   color: #303030;
   padding: 4px 12px;
   height: 45px;
@@ -63,6 +64,7 @@
 .flip div:first-child {
   animation: show 5s linear infinite;
 }
+
 
 @keyframes show {
   0% {

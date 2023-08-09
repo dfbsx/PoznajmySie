@@ -20,11 +20,39 @@ import {
   IconMapPinFilled,
   IconSettings,
 } from "@tabler/icons-react";
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useState } from "react";
+import { getUserData } from "@/crud/getUserData";
+import Conversation from "@/components/Conversation";
+import useUserStore from "../store/zustand";
 export default function Home() {
+  const [userBio, setUserBio] = useState();
+  const [userN, setUserN] = useState();
+  const roomList = useUserStore((state) => state.roomList);
+  const userName = useUserStore((state) => state.username);
+  const token = useUserStore((state) => state.token);
+  useEffect(() => {
+    const userJSON = localStorage.getItem("PoznajmySie");
+    const user = userJSON ? JSON.parse(userJSON) : null;
+    console.log("home", token)
+    console.log("lista", rooms)
+    getUserData(user?.token)
+      .then((resp) => {
+        setUserBio(resp.data.bio);
+        setUserN(resp.data.userName);
+      })
+      .catch((err) => {
+        if (err.response && err.response.data && err.response.data.title) {
+          console.log('Błąd:', err.response.data.title);
+        } else {
+          console.log('Wystąpił nieznany błąd:', err);
+        }})
+  }, [userBio, roomList]);
+
+  const rooms = useUserStore((state) => state.roomList);
+
   interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {
     image: string;
-    name: string;
+    name: string | undefined;
     icon?: React.ReactNode;
   }
 
@@ -71,7 +99,7 @@ export default function Home() {
             <Menu.Target>
               <UserButton
                 image="https://images.unsplash.com/photo-1514315384763-ba401779410f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=383&q=80"
-                name="ImLena"
+                name={userN}
               />
             </Menu.Target>
             <Menu.Dropdown>
@@ -88,41 +116,44 @@ export default function Home() {
             </Menu.Dropdown>
           </Menu>
         </Group>
-        <Input
-          className={styles.input}
-          icon={<IconMapPinFilled className={styles.icon} />}
-          variant="unstyled"
-          placeholder="Miejscowość"
-          radius="xs"
-          size="sm"
-        />
-        <Input
-          className={styles.input}
-          icon={<IconBuildingBank className={styles.icon} />}
-          placeholder="Uczelnia"
-          radius="xs"
-          size="sm"
-          variant="unstyled"
-        />
-        <Input
-          className={styles.input}
-          icon={<IconBooks className={styles.icon} />}
-          placeholder="Kierunek"
-          radius="xs"
-          size="sm"
-          variant="unstyled"
-        />
-        <Input
-          className={styles.input}
-          icon={<IconGenderBigender className={styles.icon} />}
-          placeholder="Płeć"
-          radius="xs"
-          size="sm"
-          variant="unstyled"
-        />
-        <Button color="dark" radius="xs">
-          Losuj nowy czat
-        </Button>
+        <Group spacing="sm">
+          <Input
+            className={styles.input}
+            icon={<IconMapPinFilled className={styles.icon} />}
+            variant="unstyled"
+            placeholder="Miejscowość"
+            radius="xs"
+            size="sm"
+          />
+          <Input
+            className={styles.input}
+            icon={<IconBuildingBank className={styles.icon} />}
+            placeholder="Uczelnia"
+            radius="xs"
+            size="sm"
+            variant="unstyled"
+          />
+          <Input
+            className={styles.input}
+            icon={<IconBooks className={styles.icon} />}
+            placeholder="Kierunek"
+            radius="xs"
+            size="sm"
+            variant="unstyled"
+          />
+          <Input
+            className={styles.input}
+            icon={<IconGenderBigender className={styles.icon} />}
+            placeholder="Płeć"
+            radius="xs"
+            size="sm"
+            variant="unstyled"
+          />
+
+          <Button color="dark" radius="xs">
+            Losuj nowy czat
+          </Button>
+        </Group>
       </Header>
       <Flex
         className={styles.back}
@@ -133,7 +164,12 @@ export default function Home() {
         wrap="wrap"
         p="lg"
       >
-        <div className={styles.messagesBox}>Twoje wiadomości:</div>
+        <div className={styles.messagesBox}>
+          Twoje wiadomości:
+          {rooms?.map((room) => (
+            <Conversation room={room} />
+          ))}
+        </div>
         <div className={styles.messageField}>ulahula</div>
         <div className={styles.userDescription}>ulahula</div>
       </Flex>

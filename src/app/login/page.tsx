@@ -11,11 +11,12 @@ import { useRouter } from "next/navigation";
 import styles from "../login/page.module.css";
 import { useForm } from "@mantine/form";
 import { login } from "@/crud/login";
-import { authenticate } from "../signalRActions/actions";
+import { useUserStore } from "../store/zustand";
 import { useState } from "react";
 import { IconAlertCircle } from "@tabler/icons-react";
 
 export default function Login() {
+  const {authenticate} = useUserStore()
   const router = useRouter();
   const [isLoginError, setIsLoginError] = useState(false);
   const [LoginError, setLoginError] = useState("");
@@ -38,7 +39,7 @@ export default function Login() {
   });
 
   const handleLogin = () => {
-    login(user.username, user.password)
+    login(user?.username, user?.password)
       .then((resp: any) => {
         authenticate(user.username, resp.data.token);
         router.push("/home");

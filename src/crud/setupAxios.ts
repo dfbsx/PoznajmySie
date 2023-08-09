@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-const setupAxios = (store: { getState: () => { (): any; new(): any; token: string; }; }) => {
+const setupAxios = (token : any) => {
+  console.log("setup", token)
   axios.interceptors.request.use(
     (config) => {
-      const token = store.getState().token;
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
+        console.log("Token",token)
       }
       return config;
     },
