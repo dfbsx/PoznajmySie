@@ -23,7 +23,7 @@ type appData = {
   createConnection:(token:string)=>void;
 };
 
-export const useUserStore = create<appData>((set) => ({
+export const useUserStore = create<appData>((set,get) => ({
   token: "",
   username: "",
   currentRoom: null,
@@ -32,13 +32,13 @@ export const useUserStore = create<appData>((set) => ({
   connection: null,
   roomList: [],
   isLoading: true,
-
   setAuth: (username, token) =>
     set((state) => ({
       ...state,
       username,
       token,
-    })),
+    }))
+    ,
   setRoomList: (roomList) =>
     set((state) => ({
       ...state,
@@ -75,69 +75,64 @@ export const useUserStore = create<appData>((set) => ({
       currentUser,
     })),
     authenticate: (username, token) => {
-      const {setAuth} = useUserStore();
       localStorage.setItem('PoznajmySie', JSON.stringify({ username, token }));
-      setAuth(username, token);
-      console.log('Authentication successful:', username);
-      console.log('Token:', token);
+      get().setAuth(username, token);
+      console.log('Authentication successful:', get().username);
+      console.log('Token:', get().token);
     },
     getRooms:async()=>
     {
-      set((state)=>({...state, isLoading:true}));
-      const connection = useUserStore.getState().connection;
-      await connection.invoke('GetRoomList')
+      get().setLoading(true);
+      const connection = get().connection;
+      await connection.invoke('GetRoomsList')
       .then((rooms:any)=>{
-        set((state)=>({...state, roomList:rooms}))
+        get().setRoomList(rooms);
       })
       .catch((error: any)=>{
         console.log(error)
       })
     },
     createConnection: async (key) => {
-      const {getRooms, setRoomList, setMessage, setNewMessage, setConnection} = useUserStore();
-      const currentRoom = useUserStore.getState().currentRoom;
+      //const currentRoom = useUserStore.getState().currentRoom;
       const user = JSON.parse(localStorage.getItem("PoznajmySie") || "{}");
       console.log("Mój token",user.token)
       const {login, token} = user;
       const connection = new HubConnectionBuilder()
         .withUrl("https://letsmeetapp.azurewebsites.net/chatter",{
           accessTokenFactory: () => {
-            console.log("Cokolwiek")
             console.log("Header token", token);
             return token;
           },
           withCredentials: false,
-          transport: HttpTransportType.LongPolling,
         })
         .configureLogging(LogLevel.Information)
         .build();
         
       connection.on("ReceiveCurrentAgentRoomList", (rooms) => {
-        setRoomList(rooms);
+        get().setRoomList(rooms);
       });
-      
-      console.log("naklejka",useUserStore.getState().roomList)
       connection.on("ReceiveMessage", (message) => {
         if (typeof message === "string") {
           return;
         }
         if (Array.isArray(message)) {
-          setMessage(message);
+          get().setMessage(message);
         } else {
-          if (message?.roomId === currentRoom) {
-            setNewMessage(message);
+          if (message?.roomId === get().currentRoom) {
+            get().setNewMessage(message);
           }
         }
-        getRooms();
+        get().getRooms();
       });
       
       connection.start().then(() => {
-        setConnection(connection);
-        getRooms();
+        get().setConnection(connection);
+        get().getRooms();
       });
     },
   }));
 
 export default useUserStore;
+
 
 

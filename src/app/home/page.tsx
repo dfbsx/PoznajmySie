@@ -166,8 +166,8 @@ export default function Home() {
       >
         <div className={styles.messagesBox}>
           Twoje wiadomości:
-          {rooms?.map((room) => (
-            <Conversation room={room} />
+          {rooms?.map((room, index) => (
+            <Conversation key={index} room={room} />
           ))}
         </div>
         <div className={styles.messageField}>ulahula</div>
