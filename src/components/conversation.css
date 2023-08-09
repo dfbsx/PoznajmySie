@@ -1,0 +1,8 @@
+.paper {
+display: flex;
+}
+
+.text{
+    display: flex;
+    flex-direction: column;
+}

@@ -16,10 +16,15 @@
   flex: 1;
   border-radius: 3px;
   background: #fcfcfc;
+  flex-direction: column;
+  gap:24px;
+}
+
+.messagesBox>p{
   color: #000;
 font-size: 14px;
 font-style: normal;
-font-weight: 400;
+font-weight: 500;
 line-height: normal;
 }
 

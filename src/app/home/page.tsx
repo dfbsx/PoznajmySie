@@ -159,13 +159,12 @@ export default function Home() {
         className={styles.back}
         gap="xl"
         justify="center"
-        align="center"
         direction="row"
         wrap="wrap"
         p="lg"
       >
         <div className={styles.messagesBox}>
-          Twoje wiadomości:
+          <p>Twoje wiadomości:</p>
           {rooms?.map((room, index) => (
             <Conversation key={index} room={room} />
           ))}

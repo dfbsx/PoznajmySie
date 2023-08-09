@@ -20,6 +20,12 @@ type appData = {
   setUser: (currentUser: string) => void;
   authenticate: (username: string, token: string) => void;
   getRooms:()=>void;
+  join:(roomId: any) => void;
+  create:(id: any)=> void;
+  sendMessage:(content:any)=>void;
+  newRoom:(roomId:any)=>void;
+  leaveRoom:()=>void;
+  setThisUser:(username:string)=>void;
   createConnection:(token:string)=>void;
 };
 
@@ -91,6 +97,54 @@ export const useUserStore = create<appData>((set,get) => ({
       .catch((error: any)=>{
         console.log(error)
       })
+    },
+    leaveRoom: async()=>{
+      const connection = get().connection;
+      connection.connection.send("LeaveRoom",{room:connection.currentRoom})
+      .then(()=>{
+        get().setRoomId(null);
+      })
+    },
+    setThisUser:async(username)=>{
+      get().setUser(username);
+    },
+    join: async(roomId)=>{
+      get().setLoading(true);
+      const current = get().currentRoom;
+      if(current!==null){
+        await get().leaveRoom();
+      }
+      const connection = get().connection;
+      await connection.invoke("JoinRoom",  {roomId: roomId})
+      .then(()=>{
+        get().setRoomId(roomId);
+        get().setLoading(false);
+      })
+      .catch((error: any)=>{
+        console.log(error)
+        get().setLoading(false);
+      })
+    },
+    create: async(id)=>{
+      get().setLoading(true);
+      const connection = get().connection;
+      await connection.invoke("CreateRoom",{id:id})
+      .then(()=>{
+        get().setLoading(false);
+      })
+      .catch((error: any)=>{
+        console.log(error)
+        get().setLoading(false);
+      })
+    },
+    sendMessage:async(content)=>{
+      const connection = get().connection;
+      const room = get().currentRoom;
+      connection.invoke("SendMessage", {room, content});
+    },
+    newRoom:async(roomId)=>{
+      const current = get().roomList;
+      get().setRoomList([...current, roomId]);
     },
     createConnection: async (key) => {
       //const currentRoom = useUserStore.getState().currentRoom;
