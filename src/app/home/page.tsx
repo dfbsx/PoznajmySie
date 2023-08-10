@@ -9,6 +9,7 @@ import {
   Button,
   Group,
   UnstyledButton,
+  createStyles,
 } from "@mantine/core";
 import styles from "../home/page.module.css";
 import {
@@ -24,12 +25,22 @@ import { forwardRef, useEffect, useState } from "react";
 import { getUserData } from "@/crud/getUserData";
 import Conversation from "@/components/Conversation";
 import useUserStore from "../store/zustand";
+import NoMessages from "@/components/NoMessages";
+import MessageField from "@/components/MessageField";
+import { useViewportSize } from "@mantine/hooks";
 export default function Home() {
   const [userBio, setUserBio] = useState();
   const [userN, setUserN] = useState();
   const roomList = useUserStore((state) => state.roomList);
-  const userName = useUserStore((state) => state.username);
   const token = useUserStore((state) => state.token);
+  const useStyles = createStyles((theme) => ({
+    page: {
+      background: "#FFFFFD",
+      height: "calc(100vh - 100px)",
+    },
+  }));
+
+  const { classes } = useStyles();
   useEffect(() => {
     const userJSON = localStorage.getItem("PoznajmySie");
     const user = userJSON ? JSON.parse(userJSON) : null;
@@ -156,7 +167,7 @@ export default function Home() {
         </Group>
       </Header>
       <Flex
-        className={styles.back}
+        className={classes.page}
         gap="xl"
         justify="center"
         direction="row"
@@ -169,9 +180,14 @@ export default function Home() {
             <Conversation key={index} room={room} />
           ))}
         </div>
-        <div className={styles.messageField}>ulahula</div>
+        <div className={styles.messageField}>{roomList?.length===0?<NoMessages/>:<MessageField/>}</div>
         <div className={styles.userDescription}>ulahula</div>
       </Flex>
+
     </>
   );
 }
+function useViewport(): { viewportWidth: any; viewportHeight: any; } {
+  throw new Error("Function not implemented.");
+}
+

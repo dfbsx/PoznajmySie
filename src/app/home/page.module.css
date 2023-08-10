@@ -5,19 +5,18 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-}
-
-.back {
-  background: #fffffd;
+  box-sizing: border-box;
 }
 
 .messagesBox {
   display: flex;
+  box-sizing: border-box;
   flex: 1;
   border-radius: 3px;
   background: #fcfcfc;
   flex-direction: column;
-  gap:24px;
+  gap:20px;
+  padding:12px;
 }
 
 .messagesBox>p{

@@ -7,6 +7,7 @@ function Conversation({ room }: any) {
       display:"flex",
       alignItems:"center",
       gap: "8px",
+      padding:"4px"
     },
     text:{
       display:'flex',
