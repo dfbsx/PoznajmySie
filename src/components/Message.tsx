@@ -22,6 +22,7 @@ export default function Message({ message }: any) {
         width:"fit-content",
         display:"flex",
         alignItems:"center",
+        marginBottom:"2px",
     },
   }));
 
@@ -39,7 +40,7 @@ export default function Message({ message }: any) {
         className={classes.singleMessage}
         style={
           message?.from === user
-            ? { backgroundColor: "#f8f8f8", color: "#303030" }
+            ? { backgroundColor: "#F8F8F8", color: "#303030", borderBottomLeftRadius:"0px",borderBottomRightRadius:"3px", borderColor:"#F8F8F8" }
             : undefined
         }
       >

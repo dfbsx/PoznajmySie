@@ -17,6 +17,8 @@
   flex-direction: column;
   gap:20px;
   padding:12px;
+  overflow-y: auto;
+  height: 100%;
 }
 
 .messagesBox>p{
@@ -30,6 +32,8 @@ line-height: normal;
 .messageField {
   display: flex;
   flex: 2.3;
+  height: auto;
+  height: 100%;
 }
 
 .userDescription {
@@ -37,6 +41,8 @@ line-height: normal;
   flex: 1;
   border-radius: 3px;
   background: #fcfcfc;
+  overflow-y: auto;
+  height: 100%;
 }
 
 .input {

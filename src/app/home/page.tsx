@@ -37,6 +37,7 @@ export default function Home() {
     page: {
       background: "#FFFFFD",
       height: "calc(100vh - 100px)",
+      overflow: "auto",
     },
   }));
 
