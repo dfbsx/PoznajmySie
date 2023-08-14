@@ -100,13 +100,15 @@ export const useUserStore = create<appData>((set,get) => ({
     },
     leaveRoom: async()=>{
       const connection = get().connection;
-      connection.connection.send("LeaveRoom",{room:connection.currentRoom})
+      await connection.connection.send("LeaveRoom",{room: connection.currentRoom})
       .then(()=>{
+        console.log('leave', get().currentRoom)
         get().setRoomId(null);
+        console.log('leave2', get().currentRoom)
       })
     },
-    setThisUser:async(username)=>{
-      get().setUser(username);
+    setThisUser:async(userName)=>{
+      get().setUser(userName);
     },
     join: async(roomId)=>{
       get().setLoading(true);
@@ -114,11 +116,16 @@ export const useUserStore = create<appData>((set,get) => ({
       if(current!==null){
         await get().leaveRoom();
       }
+      console.log("po ifie", current);
       const connection = get().connection;
+      await connection.stop();
+      await connection.start();
+      console.log("connection", connection)
       await connection.invoke("JoinRoom",  {roomId: roomId})
       .then(()=>{
         get().setRoomId(roomId);
         get().setLoading(false);
+        console.log("Join");
       })
       .catch((error: any)=>{
         console.log(error)
@@ -158,6 +165,7 @@ export const useUserStore = create<appData>((set,get) => ({
             return token;
           },
           withCredentials: false,
+          
         })
         .configureLogging(LogLevel.Information)
         .build();
@@ -166,6 +174,7 @@ export const useUserStore = create<appData>((set,get) => ({
         get().setRoomList(rooms);
       });
       connection.on("ReceiveMessage", (message) => {
+        console.log("wiadomosc", message)
         if (typeof message === "string") {
           return;
         }
