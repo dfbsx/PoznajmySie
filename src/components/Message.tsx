@@ -1,8 +1,10 @@
 import useUserStore from "@/app/store/zustand";
 import { createStyles } from "@mantine/core";
+import { useEffect } from "react";
 
 export default function Message({ message }: any) {
   const user = useUserStore((state) => state.currentUser);
+  
   const useStyles = createStyles((theme) => ({
     messageRow: {
       display: "flex",
@@ -10,20 +12,23 @@ export default function Message({ message }: any) {
       alignItems:"flex-end",
     },
     singleMessage: {
-        fontSize:"small",
-        padding:"4px 8px",
-        borderStyle:"solid",
-        borderWidth:"1px",
-        borderColor:"#68AEFF",
-        backgroundColor:"#68AEFF",
-        color:"#FFFFFD",
-        borderRadius:"3px 3px 0px 3px",
-        boxSizing:"border-box",
-        width:"fit-content",
-        display:"flex",
-        alignItems:"center",
-        marginBottom:"2px",
-    },
+      fontSize: "small",
+      padding: "4px 8px",
+      borderStyle: "solid",
+      borderWidth: "1px",
+      borderColor: "#68AEFF",
+      backgroundColor: "#68AEFF",
+      color: "#FFFFFD",
+      borderRadius: "3px 3px 0px 3px",
+      boxSizing: "border-box",
+      maxWidth: "60%", 
+      display: "flex",
+      alignItems: "center",
+      marginBottom: "2px",
+      wordBreak: "break-word",
+      wordWrap: "break-word",
+      overflow:"hidden",
+    } 
   }));
 
   const { classes } = useStyles();

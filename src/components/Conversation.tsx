@@ -3,38 +3,43 @@ import { Paper, Avatar, Text, createStyles } from "@mantine/core";
 
 function Conversation({ room }: any) {
   const useStyles = createStyles((theme) => ({
-    paper:{
-      display:"flex",
-      alignItems:"center",
+    paper: {
+      display: "flex",
+      alignItems: "center",
       gap: "8px",
-      padding:"4px"
+      padding: "4px",
     },
-    text:{
-      display:'flex',
-      flexDirection:"column",
-    }
+    text: {
+      display: "flex",
+      flexDirection: "column",
+    },
   }));
   const { classes } = useStyles();
-  const {join, setThisUser} = useUserStore();
-  const user = useUserStore((state)=>state.currentUser);
+  const { join, setThisUser } = useUserStore();
+  const user = useUserStore((state) => state.currentUser);
   return (
-    <Paper className={classes.paper}
+    <Paper
+      className={classes.paper}
       onClick={() => {
         join(room?.roomId);
         setThisUser(room?.roomName);
       }}
     >
-        <Avatar
+      <Avatar
         size="lg"
-          radius="xl"
-          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
-        />
-        <div className={classes.text}>
+        radius="xl"
+        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
+      />
+      <div className={classes.text}>
         <Text fw={500}>{room.roomName ? room.roomName : "Pokój usunięty"}</Text>
         <Text fz="sm">
-          {room.lastMessage !== null ? room.lastMessage : "Brak wiadomości"}
+          {room.lastMessage !== null
+            ? room.lastMessage.length > 20
+              ? `${room.lastMessage.slice(0, 17)}...`
+              : room.lastMessage
+            : "Brak wiadomości"}
         </Text>
-        </div>
+      </div>
     </Paper>
   );
 }

@@ -70,10 +70,10 @@ export const useUserStore = create<appData>((set,get) => ({
       ...state,
       messages,
     })),
-  setNewMessage: (messages) =>
+    setNewMessage: (newMessage) =>
     set((state) => ({
       ...state,
-      messages: [...state.messages],
+      messages: [...state.messages, newMessage],
     })),
   setUser: (currentUser) =>
     set((state) => ({
@@ -154,18 +154,15 @@ export const useUserStore = create<appData>((set,get) => ({
       get().setRoomList([...current, roomId]);
     },
     createConnection: async (key) => {
-      //const currentRoom = useUserStore.getState().currentRoom;
       const user = JSON.parse(localStorage.getItem("PoznajmySie") || "{}");
       console.log("Mój token",user.token)
       const {login, token} = user;
       const connection = new HubConnectionBuilder()
         .withUrl("https://letsmeetapp.azurewebsites.net/chatter",{
           accessTokenFactory: () => {
-            console.log("Header token", token);
             return token;
           },
           withCredentials: false,
-          
         })
         .configureLogging(LogLevel.Information)
         .build();

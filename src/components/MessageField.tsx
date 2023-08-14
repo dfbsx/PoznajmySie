@@ -4,44 +4,26 @@ import {
   Avatar,
   Text,
   createStyles,
-  Container,
   Textarea,
   ScrollArea,
 } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
-import { getUserDataFromNick } from "@/crud/getUserDataFromNick";
 
 export default function MessageField() {
-  const [otherUserData, setOtherUserData] = useState({});
   const user = useUserStore((state) => state?.currentUser);
-  const [message, setMessage] = useState("");
+  const [message, setThisMessage] = useState("");
   const messages = useUserStore((state) => state?.messages);
-  const messagesEndRef = useRef<null | HTMLDivElement>(null);
+  const {sendMessage} = useUserStore();
+  const viewport = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef?.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const scrollToBottom = () =>
+    viewport?.current?.scrollTo({ top: viewport.current.scrollHeight, behavior: 'smooth' });
 
   useEffect(() => {
-    console.log("wiadomości", messages)
-    if (user) {
-      getUserDataFromNick(user)
-        .then((resp) => {
-          console.log("dane obcego", resp.data);
-          console.log("Juzer", user);
-          setOtherUserData(resp.data);
-        })
-        .catch((err) => {
-          console.log("Nie działają dane obcego bo:", err);
-          alert(
-            err.response.data.title
-              ? err.response.data.title
-              : "Wystąpił nieznany błąd"
-          );
-        });
-    }
-  }, [user]);
+    console.log("Messages updated:", messages);
+    scrollToBottom()
+  }, [messages]);
 
   const useStyles = createStyles((theme) => ({
     container: {
@@ -54,8 +36,8 @@ export default function MessageField() {
     paper: {
       display: "flex",
       padding: "16px",
-      alignItems:"center",
-      gap:"16px",
+      alignItems: "center",
+      gap: "16px",
       background: "#FCFCFC",
       borderRadius: "3px",
       borderBottom: "1px solid #F1F1F1",
@@ -65,11 +47,11 @@ export default function MessageField() {
       background: "#FFFFFD",
       justifySelf: "flex-end",
       width: "100%",
-      position:"absolute",
+      position: "absolute",
       bottom: "0",
     },
     chat: {
-      marginBottom:"64px",
+      marginBottom: "64px",
       display: "flex",
       flexDirection: "column",
       width: "100%",
@@ -79,30 +61,47 @@ export default function MessageField() {
   }));
 
   const { classes } = useStyles();
+
+  const onEnterPress = (e:any) => {
+    if(e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      if (message) {
+        sendMessage(message); 
+        setThisMessage("");
+        console.log("wiadomości",messages)
+      }
+    }
+  }
+
   return (
     <div className={classes.container}>
-      {messages.length===0?null:<Paper className={classes.paper}>
-        <Avatar
-          size="lg"
-          radius="xl"
-          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
-        />
-        <Text fz="lg" fw={500}>
-          {user}
-        </Text>
-      </Paper>}
-      
-      <ScrollArea className={classes.chat}  offsetScrollbars scrollbarSize={8}>
+      {messages.length === 0 ? null : (
+        <Paper className={classes.paper}>
+          <Avatar
+            size="lg"
+            radius="xl"
+            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
+          />
+          <Text fz="lg" fw={500}>
+            {user}
+          </Text>
+        </Paper>
+      )}
+
+      <ScrollArea className={classes.chat} offsetScrollbars scrollbarSize={8} viewportRef={viewport}>
         {messages.length === 0 ? (
           <p style={{ fontStyle: "italic" }}>Rozpocznij konwersację</p>
         ) : (
-          messages.map((message, index) => (
-            <Message message={message} key={index} />
+          messages.map((mess, index) => (
+            <Message message={mess} key={index} />
           ))
         )}
       </ScrollArea>
 
       <Textarea
+        value={message}
+        onKeyDown={onEnterPress}
+        onChange={(event) => setThisMessage(event.currentTarget.value)}
         className={classes.newMessageField}
         placeholder="Twoja wiadomość"
         radius="xs"
