@@ -28,6 +28,7 @@ import useUserStore from "../store/zustand";
 import NoMessages from "@/components/NoMessages";
 import MessageField from "@/components/MessageField";
 import { useViewportSize } from "@mantine/hooks";
+import UserDesc from "@/components/UserDesc";
 export default function Home() {
   const [userBio, setUserBio] = useState();
   const [userN, setUserN] = useState();
@@ -45,8 +46,6 @@ export default function Home() {
   useEffect(() => {
     const userJSON = localStorage.getItem("PoznajmySie");
     const user = userJSON ? JSON.parse(userJSON) : null;
-    console.log("home", token)
-    console.log("lista", rooms)
     getUserData(user?.token)
       .then((resp) => {
         setUserBio(resp.data.bio);
@@ -182,13 +181,10 @@ export default function Home() {
           ))}
         </div>
         <div className={styles.messageField}>{roomList?.length===0?<NoMessages/>:<MessageField/>}</div>
-        <div className={styles.userDescription}>ulahula</div>
+        <div className={styles.userDescription}><UserDesc/></div>
       </Flex>
 
     </>
   );
-}
-function useViewport(): { viewportWidth: any; viewportHeight: any; } {
-  throw new Error("Function not implemented.");
 }
 

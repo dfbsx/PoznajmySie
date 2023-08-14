@@ -25,15 +25,8 @@ export default function RootLayout({ children }: props) {
     const userJSON = localStorage.getItem("PoznajmySie");
     const user = userJSON ? JSON.parse(userJSON) : null;
     if (user?.username) {
-      console.log("działa", user)
-      console.log("działa", user)
-      console.log("działa", user)
       setupAxios(user?.token);
-      console.log("halooo")
-      console.log("halooo")
-      console.log("halooo")
       createConnection(user?.token);
-      console.log("tak");
     } else {
       console.log("nie");
     }

@@ -83,8 +83,6 @@ export const useUserStore = create<appData>((set,get) => ({
     authenticate: (username, token) => {
       localStorage.setItem('PoznajmySie', JSON.stringify({ username, token }));
       get().setAuth(username, token);
-      console.log('Authentication successful:', get().username);
-      console.log('Token:', get().token);
     },
     getRooms:async()=>
     {
@@ -102,9 +100,7 @@ export const useUserStore = create<appData>((set,get) => ({
       const connection = get().connection;
       await connection.connection.send("LeaveRoom",{room: connection.currentRoom})
       .then(()=>{
-        console.log('leave', get().currentRoom)
         get().setRoomId(null);
-        console.log('leave2', get().currentRoom)
       })
     },
     setThisUser:async(userName)=>{
@@ -116,16 +112,13 @@ export const useUserStore = create<appData>((set,get) => ({
       if(current!==null){
         await get().leaveRoom();
       }
-      console.log("po ifie", current);
       const connection = get().connection;
       await connection.stop();
       await connection.start();
-      console.log("connection", connection)
       await connection.invoke("JoinRoom",  {roomId: roomId})
       .then(()=>{
         get().setRoomId(roomId);
         get().setLoading(false);
-        console.log("Join");
       })
       .catch((error: any)=>{
         console.log(error)
@@ -153,10 +146,7 @@ export const useUserStore = create<appData>((set,get) => ({
       const current = get().roomList;
       get().setRoomList([...current, roomId]);
     },
-    createConnection: async (key) => {
-      const user = JSON.parse(localStorage.getItem("PoznajmySie") || "{}");
-      console.log("Mój token",user.token)
-      const {login, token} = user;
+    createConnection: async (token) => {
       const connection = new HubConnectionBuilder()
         .withUrl("https://letsmeetapp.azurewebsites.net/chatter",{
           accessTokenFactory: () => {
@@ -171,7 +161,6 @@ export const useUserStore = create<appData>((set,get) => ({
         get().setRoomList(rooms);
       });
       connection.on("ReceiveMessage", (message) => {
-        console.log("wiadomosc", message)
         if (typeof message === "string") {
           return;
         }

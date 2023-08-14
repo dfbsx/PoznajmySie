@@ -15,14 +15,15 @@ function Conversation({ room }: any) {
     },
   }));
   const { classes } = useStyles();
-  const { join, setThisUser } = useUserStore();
-  const user = useUserStore((state) => state.currentUser);
+  const { join, setThisUser, setUser } = useUserStore();
+  const user = useUserStore((state)=>state.currentUser)
   return (
     <Paper
       className={classes.paper}
       onClick={() => {
         join(room?.roomId);
         setThisUser(room?.roomName);
+        setUser(room?.roomName)
       }}
     >
       <Avatar

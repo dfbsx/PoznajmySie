@@ -21,7 +21,6 @@ export default function MessageField() {
     viewport?.current?.scrollTo({ top: viewport.current.scrollHeight, behavior: 'smooth' });
 
   useEffect(() => {
-    console.log("Messages updated:", messages);
     scrollToBottom()
   }, [messages]);
 
@@ -68,7 +67,6 @@ export default function MessageField() {
       if (message) {
         sendMessage(message); 
         setThisMessage("");
-        console.log("wiadomości",messages)
       }
     }
   }
