@@ -15,18 +15,18 @@
   border-radius: 3px;
   background: #fcfcfc;
   flex-direction: column;
-  gap:20px;
-  padding:12px;
+  gap: 20px;
+  padding: 12px;
   overflow-y: auto;
   height: 100%;
 }
 
-.messagesBox>p{
+.messagesBox > p {
   color: #000;
-font-size: 14px;
-font-style: normal;
-font-weight: 500;
-line-height: normal;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 .messageField {
@@ -47,20 +47,5 @@ line-height: normal;
   overflow-y: auto;
   height: 100%;
   padding: 24px;
-width: 100%;
-}
-
-.input {
-  border-radius: 3px;
-  background: #fffffd;
-  box-shadow: 0px 2px 70px 0px rgba(0, 0, 0, 0.1);
-  padding: 1px;
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-.icon {
-  color: #303030;
+  width: 100%;
 }

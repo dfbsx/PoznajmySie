@@ -5,20 +5,14 @@ import {
   Flex,
   Header,
   Menu,
-  Input,
-  Button,
   Group,
   UnstyledButton,
   createStyles,
 } from "@mantine/core";
 import styles from "../home/page.module.css";
 import {
-  IconBooks,
-  IconBuildingBank,
   IconChevronRight,
-  IconGenderBigender,
   IconLogout,
-  IconMapPinFilled,
   IconSettings,
 } from "@tabler/icons-react";
 import { forwardRef, useEffect, useState } from "react";
@@ -27,8 +21,8 @@ import Conversation from "@/components/Conversation";
 import useUserStore from "../store/zustand";
 import NoMessages from "@/components/NoMessages";
 import MessageField from "@/components/MessageField";
-import { useViewportSize } from "@mantine/hooks";
 import UserDesc from "@/components/UserDesc";
+import DrawBar from "@/components/DrawBar";
 export default function Home() {
   const [userBio, setUserBio] = useState();
   const [userN, setUserN] = useState();
@@ -89,13 +83,11 @@ export default function Home() {
       >
         <Group>
           <Avatar src={image} radius="xl" />
-
           <div style={{ flex: 1 }}>
             <Text size="sm" weight={500}>
               {name}
             </Text>
           </div>
-
           {icon || <IconChevronRight size="1rem" />}
         </Group>
       </UnstyledButton>
@@ -127,44 +119,7 @@ export default function Home() {
             </Menu.Dropdown>
           </Menu>
         </Group>
-        <Group spacing="sm">
-          <Input
-            className={styles.input}
-            icon={<IconMapPinFilled className={styles.icon} />}
-            variant="unstyled"
-            placeholder="Miejscowość"
-            radius="xs"
-            size="sm"
-          />
-          <Input
-            className={styles.input}
-            icon={<IconBuildingBank className={styles.icon} />}
-            placeholder="Uczelnia"
-            radius="xs"
-            size="sm"
-            variant="unstyled"
-          />
-          <Input
-            className={styles.input}
-            icon={<IconBooks className={styles.icon} />}
-            placeholder="Kierunek"
-            radius="xs"
-            size="sm"
-            variant="unstyled"
-          />
-          <Input
-            className={styles.input}
-            icon={<IconGenderBigender className={styles.icon} />}
-            placeholder="Płeć"
-            radius="xs"
-            size="sm"
-            variant="unstyled"
-          />
-
-          <Button color="dark" radius="xs">
-            Losuj nowy czat
-          </Button>
-        </Group>
+        <DrawBar/>
       </Header>
       <Flex
         className={classes.page}

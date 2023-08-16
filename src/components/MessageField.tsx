@@ -55,7 +55,7 @@ export default function MessageField() {
       flexDirection: "column",
       width: "100%",
       boxSizing: "border-box",
-      gap: "4px",
+      gap: "8px",
     },
   }));
 
