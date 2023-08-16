@@ -23,11 +23,12 @@ import NoMessages from "@/components/NoMessages";
 import MessageField from "@/components/MessageField";
 import UserDesc from "@/components/UserDesc";
 import DrawBar from "@/components/DrawBar";
+import { useRouter } from "next/navigation";
 export default function Home() {
   const [userBio, setUserBio] = useState();
   const [userN, setUserN] = useState();
   const roomList = useUserStore((state) => state.roomList);
-  const token = useUserStore((state) => state.token);
+  const router = useRouter();
   const useStyles = createStyles((theme) => ({
     page: {
       background: "#FFFFFD",
@@ -107,7 +108,7 @@ export default function Home() {
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Label>Aplikacja</Menu.Label>
-              <Menu.Item icon={<IconSettings size={14} />}>
+              <Menu.Item onClick={() => router.push("/edit")} icon={<IconSettings size={14} />}>
                 Edytuj profil
               </Menu.Item>
 

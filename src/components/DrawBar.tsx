@@ -1,3 +1,5 @@
+import useUserStore from "@/app/store/zustand";
+import { draw } from "@/crud/draw";
 import { Button, Group, Input, createStyles } from "@mantine/core";
 import {
   IconBooks,
@@ -5,8 +7,36 @@ import {
   IconGenderBigender,
   IconMapPinFilled,
 } from "@tabler/icons-react";
+import { useState } from "react";
 
 export default function DrawBar() {
+    interface Person {
+        isUniversity:boolean,
+        isCity:boolean,
+        gender:string,
+    }
+    const [newPerson, setNewPerson] = useState<Person>({
+        isUniversity: false,
+        isCity: true,
+        gender: "",
+      });
+      const {getRooms, join} = useUserStore();
+
+      const handleDraw = () => {
+        console.log("nowy obiekt", newPerson);
+        draw(newPerson.isUniversity, newPerson.isCity, newPerson.gender)
+          .then((resp) => {
+            console.log("to dostaliśmy", resp.data);
+            getRooms();
+            join(resp.data.roomId);
+          })
+          .catch((err) => {
+            alert("Nie znaleziono odpowiedniego użytkownika :c");
+          });
+      };
+
+      
+          
   const useStyles = createStyles((theme) => ({
     icon: {
       color: "#303030",
@@ -60,7 +90,7 @@ export default function DrawBar() {
           variant="unstyled"
         />
 
-        <Button color="dark" radius="xs">
+        <Button color="dark" radius="xs" onClick={handleDraw}>
           Losuj nowy czat
         </Button>
       </Group>
