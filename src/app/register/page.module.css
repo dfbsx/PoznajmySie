@@ -56,3 +56,19 @@
 .headerText{
     margin-bottom: -10px;
 }
+
+@media (768px <= width <= 1024px){
+    .loginForm {
+        transform: scale(0.8);
+    }
+}
+
+@media (max-width: 768px) {
+    .loginImage, .loginImagept2 {
+        display: none;
+    }
+    .loginForm {
+        flex: 1;
+        transform: scale(0.8);
+    }
+}
