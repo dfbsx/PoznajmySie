@@ -68,6 +68,7 @@ export default function Edit() {
   };
   return (
     <div className={styles.page}>
+    <div className={styles.data}>
       <div className={styles.avatarColumn}>
         <Group position="center">
           <Indicator
@@ -126,7 +127,10 @@ export default function Edit() {
           value={userData.major}
           onChange={(e) => setUserData({ ...userData, major: e.target.value })}
         />
-        <Group position="right" spacing="xl">
+      </Flex>
+      
+    </div>
+    <Group className={styles.buttons} position="right" spacing="xl">
           <Button
             className={styles.button}
             variant="subtle"
@@ -145,7 +149,6 @@ export default function Edit() {
             Zapisz zmiany
           </Button>
         </Group>
-      </Flex>
     </div>
   );
 }
