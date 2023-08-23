@@ -1,5 +1,5 @@
 "use client";
-import { Button, Group, Flex } from "@mantine/core";
+import { Button, Group, Flex, MediaQuery, rem } from "@mantine/core";
 import styles from "./page.module.css";
 import girlGraphic from "../../public/startpagegraphic.png";
 import Image from "next/image";
@@ -32,10 +32,16 @@ export default function Page() {
         direction="column"
         wrap="wrap"
       >
+  
         <div className={styles.container}>
+        <MediaQuery
+      query="(max-width: 1250px) and (min-width: 500px)"
+      styles={{ fontSize: "24px", '&:hover': { backgroundColor: 'silver' } }}
+    >
           <div className={styles.flip}>
+          
             <div>
-              <div>Jesteś studentem?</div>
+              <div className={styles.text}>Jesteś studentem?</div>
             </div>
             <div>
               <div>Masz ochotę na wyjście?</div>
@@ -43,8 +49,11 @@ export default function Page() {
             <div>
               <div>Potrzebujesz pomocy w nauce?</div>
             </div>
+           
           </div>
+          </MediaQuery>
         </div>
+      
         <p className={styles.appName}>Poznajmy się!</p>
         <p className={styles.appDescription}>
           Aplikacja stworzona przez studentów, dla studentów
