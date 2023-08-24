@@ -6,22 +6,29 @@ import {
   createStyles,
   Textarea,
   ScrollArea,
+  Group,
 } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
+import { useMediaQuery } from "@mantine/hooks";
+import HoverInfo from "./HoverInfo";
 
 export default function MessageField() {
   const user = useUserStore((state) => state?.currentUser);
   const [message, setThisMessage] = useState("");
   const messages = useUserStore((state) => state?.messages);
-  const {sendMessage} = useUserStore();
+  const { sendMessage } = useUserStore();
   const viewport = useRef<HTMLDivElement>(null);
+  const matches = useMediaQuery("(max-width: 1184px)");
 
   const scrollToBottom = () =>
-    viewport?.current?.scrollTo({ top: viewport.current.scrollHeight, behavior: 'smooth' });
+    viewport?.current?.scrollTo({
+      top: viewport.current.scrollHeight,
+      behavior: "smooth",
+    });
 
   useEffect(() => {
-    scrollToBottom()
+    scrollToBottom();
   }, [messages]);
 
   const useStyles = createStyles((theme) => ({
@@ -36,6 +43,7 @@ export default function MessageField() {
       display: "flex",
       padding: "16px",
       alignItems: "center",
+      justifyContent:"space-between",
       gap: "16px",
       background: "#FCFCFC",
       borderRadius: "3px",
@@ -61,20 +69,21 @@ export default function MessageField() {
 
   const { classes } = useStyles();
 
-  const onEnterPress = (e:any) => {
-    if(e.keyCode == 13 && e.shiftKey == false) {
+  const onEnterPress = (e: any) => {
+    if (e.keyCode == 13 && e.shiftKey == false) {
       e.preventDefault();
       if (message) {
-        sendMessage(message); 
+        sendMessage(message);
         setThisMessage("");
       }
     }
-  }
+  };
 
   return (
     <div className={classes.container}>
       {messages.length === 0 ? null : (
         <Paper className={classes.paper}>
+          <Group>
           <Avatar
             size="lg"
             radius="xl"
@@ -83,16 +92,23 @@ export default function MessageField() {
           <Text fz="lg" fw={500}>
             {user}
           </Text>
+          </Group>
+          {matches ? (
+            <HoverInfo/>
+          ) : null}
         </Paper>
       )}
 
-      <ScrollArea className={classes.chat} offsetScrollbars scrollbarSize={8} viewportRef={viewport}>
+      <ScrollArea
+        className={classes.chat}
+        offsetScrollbars
+        scrollbarSize={8}
+        viewportRef={viewport}
+      >
         {messages.length === 0 ? (
           <p style={{ fontStyle: "italic" }}>Rozpocznij konwersację</p>
         ) : (
-          messages.map((mess, index) => (
-            <Message message={mess} key={index} />
-          ))
+          messages.map((mess, index) => <Message message={mess} key={index} />)
         )}
       </ScrollArea>
 

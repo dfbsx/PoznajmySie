@@ -24,11 +24,17 @@ import MessageField from "@/components/MessageField";
 import UserDesc from "@/components/UserDesc";
 import DrawBar from "@/components/DrawBar";
 import { useRouter } from "next/navigation";
+import { useMediaQuery } from "@mantine/hooks";
+import DrawModal from "@/components/DrawModal";
+import MesagesDrawer from "@/components/MessagesDrawer";
 export default function Home() {
   const [userBio, setUserBio] = useState();
   const [userN, setUserN] = useState();
   const roomList = useUserStore((state) => state.roomList);
+  const currentUser = useUserStore((state) => state.currentUser);
   const router = useRouter();
+  const matches = useMediaQuery("(max-width: 1184px)");
+  const small = useMediaQuery("(max-width: 550px)");
   const useStyles = createStyles((theme) => ({
     page: {
       background: "#FFFFFD",
@@ -48,10 +54,11 @@ export default function Home() {
       })
       .catch((err) => {
         if (err.response && err.response.data && err.response.data.title) {
-          console.log('Błąd:', err.response.data.title);
+          console.log("Błąd:", err.response.data.title);
         } else {
-          console.log('Wystąpił nieznany błąd:', err);
-        }})
+          console.log("Wystąpił nieznany błąd:", err);
+        }
+      });
   }, [userBio, roomList]);
 
   const rooms = useUserStore((state) => state.roomList);
@@ -108,7 +115,10 @@ export default function Home() {
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Label>Aplikacja</Menu.Label>
-              <Menu.Item onClick={() => router.push("/edit")} icon={<IconSettings size={14} />}>
+              <Menu.Item
+                onClick={() => router.push("/edit")}
+                icon={<IconSettings size={14} />}
+              >
                 Edytuj profil
               </Menu.Item>
 
@@ -120,7 +130,10 @@ export default function Home() {
             </Menu.Dropdown>
           </Menu>
         </Group>
-        <DrawBar/>
+        <Group>
+          {small ? <MesagesDrawer rooms={roomList} /> : null}
+          {matches ? <DrawModal /> : <DrawBar />}
+        </Group>
       </Header>
       <Flex
         className={classes.page}
@@ -130,17 +143,23 @@ export default function Home() {
         wrap="wrap"
         p="lg"
       >
-        <div className={styles.messagesBox}>
-          <p>Twoje wiadomości:</p>
-          {rooms?.map((room, index) => (
-            <Conversation key={index} room={room} />
-          ))}
+        {small ? null : (
+          <div className={styles.messagesBox}>
+            <p>Twoje wiadomości:</p>
+            {rooms?.map((room, index) => (
+              <Conversation key={index} room={room} />
+            ))}
+          </div>
+        )}
+        <div className={styles.messageField}>
+          {roomList?.length === 0 ? <NoMessages /> : <MessageField />}
         </div>
-        <div className={styles.messageField}>{roomList?.length===0?<NoMessages/>:<MessageField/>}</div>
-        <div className={styles.userDescription}><UserDesc/></div>
+        {currentUser == "" || matches ? null : (
+          <div className={styles.userDescription}>
+            <UserDesc />
+          </div>
+        )}
       </Flex>
-
     </>
   );
 }
-
