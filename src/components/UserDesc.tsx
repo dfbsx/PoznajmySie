@@ -41,6 +41,7 @@ export default function UserDesc() {
     page: {
       width: "100%",
       boxSizing: "border-box",
+      marginTop:"16px"
     },
     textFlex: {
       boxSizing: "border-box",

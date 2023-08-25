@@ -8,6 +8,10 @@ function Conversation({ room }: any) {
       alignItems: "center",
       gap: "8px",
       padding: "4px",
+      transition: "background-color 0.3s ease",
+      "&:hover": {
+        backgroundColor: "#EDF3FA",
+      },
     },
     text: {
       display: "flex",

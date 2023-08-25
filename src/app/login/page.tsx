@@ -21,27 +21,32 @@ export default function Login() {
   const [isLoginError, setIsLoginError] = useState(false);
   const [LoginError, setLoginError] = useState("");
   type LoginForm = {
-    username: string;
+    login: string;
     password: string;
   };
   const [user, setUser] = useState<LoginForm>({
-    username: "",
+    login: "",
     password: "",
   });
   const form = useForm<LoginForm>({
+    initialValues:user,
     validateInputOnChange: true,
     validate: {
-      username: (value) =>
+      login: (value) =>
         value.length < 4 ? "Login powinien zawierać co najmniej 4 znaki" : null,
       password: (value) =>
         value.length < 8 ? "Hasło powinno zaiwerać co najmniej 8 znaków" : null,
     },
   });
 
-  const handleLogin = () => {
-    login(user?.username, user?.password)
+  const handleLogin = (values: LoginForm) => {
+    setUser({
+      login: values.login,
+      password: values.password,
+    });
+    login(values)
       .then((resp: any) => {
-        authenticate(user.username, resp.data.token);
+        authenticate(resp.data.userName, resp.data.token);
         router.push("/home");
       })
       .catch((error: any) => {
@@ -86,15 +91,14 @@ export default function Login() {
               Nie masz jeszcze konta? <strong>Zarejestruj się</strong>
             </p>
           </div>
-          <form className={styles.formLayout}>
+          <form className={styles.formLayout} onSubmit={form.onSubmit((values) => handleLogin(values))}>
             <TextInput
               placeholder="Login"
               label="Login"
               radius="xs"
               size="md"
               withAsterisk
-              value={user.username}
-              onChange={(e) => setUser({ ...user, username: e.target.value })}
+              {...form.getInputProps('login')}
             />
             <PasswordInput
               placeholder="*****"
@@ -102,8 +106,7 @@ export default function Login() {
               size="md"
               radius="xs"
               withAsterisk
-              value={user.password}
-              onChange={(e) => setUser({ ...user, password: e.target.value })}
+             {...form.getInputProps('password')}
             />
             {isLoginError === true ? (
               <Alert
@@ -115,7 +118,7 @@ export default function Login() {
                 {LoginError}
               </Alert>
             ) : null}
-            <Button color="dark" radius="xs" size="md" onClick={handleLogin}>
+            <Button color="dark" radius="xs" size="md" type="submit">
               Zaloguj
             </Button>
           </form>

@@ -30,7 +30,7 @@ export default function RootLayout({ children }: props) {
     } else {
       console.log("nie");
     }
-  },[]);
+  },[token]);
 
   return (
     <html lang="en" className={biryani.className}>
