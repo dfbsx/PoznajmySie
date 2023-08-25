@@ -1,14 +1,21 @@
 "use client";
-import { Button, Flex, Group, PasswordInput, TextInput } from "@mantine/core";
+import {
+  Button,
+  Flex,
+  Group,
+  PasswordInput,
+  Select,
+  TextInput,
+} from "@mantine/core";
 import { useRouter } from "next/navigation";
 import styles from "../register/page.module.css";
 import { useState } from "react";
 import { matches, useForm } from "@mantine/form";
 import { register } from "@/crud/register";
-import { useUserStore } from "../store/zustand"
+import { useUserStore } from "../store/zustand";
 
 export default function Login() {
-  const {authenticate} = useUserStore();
+  const { authenticate } = useUserStore();
   const router = useRouter();
   const [isRegisterError, setIsRegisterError] = useState(false);
   const [registerError, setRegisterError] = useState("");
@@ -43,7 +50,7 @@ export default function Login() {
         /^\S+@\S+$/.test(value) ? null : "Niepoprawny format adresu e-mail",
       username: (value) =>
         value.length < 4 ? "Login powinien zawierać co najmniej 4 znaki" : null,
-        password: (value) =>
+      password: (value) =>
         !/^.*(?=.{8,})(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).*$/g.test(value)
           ? "Hasło powinno zawierać co najmniej 8 znaków, jedną dużą literę, jedną cyfrę i jeden znak specjalny"
           : null,
@@ -51,7 +58,6 @@ export default function Login() {
         value !== values.password ? "Podane hasła się różnią" : null,
     },
   });
-  
 
   const handleRegister = (values: RegisterForm) => {
     setRegisterData({
@@ -66,17 +72,20 @@ export default function Login() {
       gender: registerData.gender,
     });
     register(values)
-    .then((resp)=>{
-        console.log("Resp",resp)
-        authenticate(resp.data.userName,resp.data.token)
-        router.push("home")
-        console.log("register data",registerData)
-    })
-    .catch((error)=>{
-        alert(error.response.data.title?error.response.data.title:"Wystąpił nieznany błąd")
-    })
+      .then((resp) => {
+        console.log("Resp", resp);
+        authenticate(resp.data.userName, resp.data.token);
+        router.push("home");
+        console.log("register data", registerData);
+      })
+      .catch((error) => {
+        alert(
+          error.response.data.title
+            ? error.response.data.title
+            : "Wystąpił nieznany błąd"
+        );
+      });
   };
-  
 
   const [nextStep, setNextStep] = useState(false);
   return (
@@ -119,8 +128,7 @@ export default function Login() {
                 radius="xs"
                 size="md"
                 withAsterisk
-                {...form.getInputProps('email')}
-                
+                {...form.getInputProps("email")}
               />
               <TextInput
                 placeholder="Login"
@@ -128,7 +136,7 @@ export default function Login() {
                 radius="xs"
                 size="md"
                 withAsterisk
-                {...form.getInputProps('username')}
+                {...form.getInputProps("username")}
               />
               <PasswordInput
                 placeholder="*****"
@@ -136,7 +144,7 @@ export default function Login() {
                 size="md"
                 radius="xs"
                 withAsterisk
-                {...form.getInputProps('password')}
+                {...form.getInputProps("password")}
               />
               <PasswordInput
                 placeholder="*****"
@@ -144,13 +152,15 @@ export default function Login() {
                 size="md"
                 radius="xs"
                 withAsterisk
-                {...form.getInputProps('reapetedPassword')}
+                {...form.getInputProps("reapetedPassword")}
               />
               <Button
                 color="dark"
                 radius="xs"
                 size="md"
-                onClick={() =>form.isValid()===true?setNextStep(true):null}
+                onClick={() =>
+                  form.isValid() === true ? setNextStep(true) : null
+                }
               >
                 Jeszcze tylko jeden krok
               </Button>
@@ -171,48 +181,50 @@ export default function Login() {
               <h1 className={styles.headerText}>Powiedz coś o sobie</h1>
               <p>Aby lepiej można było Cię poznać</p>
             </div>
-            <form className={styles.formLayout} onSubmit={form.onSubmit((values) => handleRegister(values))}>
+            <form
+              className={styles.formLayout}
+              onSubmit={form.onSubmit((values) => console.log(values))}
+            >
               <TextInput
                 placeholder="Lubię jazdę na rowerze"
                 label="Bio"
                 radius="xs"
                 size="md"
-                withAsterisk
-                {...form.getInputProps('bio')}
+                {...form.getInputProps("bio")}
               />
               <TextInput
                 placeholder="Rzeszów"
                 label="Miasto"
                 radius="xs"
                 size="md"
-                withAsterisk
-                {...form.getInputProps('city')}
+                {...form.getInputProps("city")}
               />
               <TextInput
                 placeholder="Politechnika Rzeszowska"
                 label="Uczelnia"
                 size="md"
                 radius="xs"
-                withAsterisk
-                {...form.getInputProps('uni')}
+                {...form.getInputProps("uni")}
               />
               <TextInput
                 placeholder="Informatyka"
                 label="Kierunek"
                 size="md"
                 radius="xs"
-                withAsterisk
-                {...form.getInputProps('major')}
+                {...form.getInputProps("major")}
               />
-              <TextInput
-                placeholder="K"
+              <Select
                 label="Płeć"
+                placeholder="Wybierz z listy"
                 size="md"
                 radius="xs"
-                withAsterisk
-                {...form.getInputProps('gender')}
+                data={[
+                  { value: "0", label: "Mężczyzna" },
+                  { value: "1", label: "Kobieta" },
+                ]}
+                {...form.getInputProps("gender")}
               />
-              <Button color="dark" radius="xs" size="md"  type="submit">
+              <Button color="dark" radius="xs" size="md" type="submit">
                 Zarejestruj
               </Button>
             </form>
