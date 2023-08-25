@@ -111,7 +111,7 @@ export default function MessageField() {
           messages.map((mess, index) => <Message message={mess} key={index} />)
         )}
       </ScrollArea>
-
+{messages.length === 0? null:
       <Textarea
         value={message}
         onKeyDown={onEnterPress}
@@ -122,7 +122,7 @@ export default function MessageField() {
         autosize
         minRows={2}
         maxRows={2}
-      />
+      />}
     </div>
   );
 }
