@@ -45,7 +45,7 @@ export default function MessageField() {
       alignItems: "center",
       justifyContent:"space-between",
       gap: "16px",
-      background: "#EDF3FA",
+      background: "#EBEBEB",
       borderRadius: "3px",
       borderBottom: "1px solid #F1F1F1",
     },

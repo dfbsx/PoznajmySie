@@ -150,7 +150,7 @@ export default function Login() {
                 color="dark"
                 radius="xs"
                 size="md"
-                onClick={() => setNextStep(true)}
+                onClick={() =>form.isValid()===true?setNextStep(true):null}
               >
                 Jeszcze tylko jeden krok
               </Button>
