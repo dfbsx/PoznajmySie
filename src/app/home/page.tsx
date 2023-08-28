@@ -64,6 +64,11 @@ function Home() {
 
   const rooms = useUserStore((state) => state.roomList);
 
+  const logout = () =>{
+    localStorage.removeItem("PoznajmySie");
+    router.push("/")
+  };
+
   interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {
     image: string;
     name: string | undefined;
@@ -125,7 +130,7 @@ function Home() {
 
               <Menu.Divider />
               <Menu.Label>Inne</Menu.Label>
-              <Menu.Item color="red" icon={<IconLogout size={14} />}>
+              <Menu.Item color="red" onClick={()=>logout()} icon={<IconLogout size={14} />}>
                 Wyloguj się
               </Menu.Item>
             </Menu.Dropdown>
