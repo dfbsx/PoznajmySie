@@ -27,7 +27,8 @@ import { useRouter } from "next/navigation";
 import { useMediaQuery } from "@mantine/hooks";
 import DrawModal from "@/components/DrawModal";
 import MesagesDrawer from "@/components/MessagesDrawer";
-export default function Home() {
+import withAuth from "@/components/withAuth";
+function Home() {
   const [userBio, setUserBio] = useState();
   const [userN, setUserN] = useState();
   const roomList = useUserStore((state) => state.roomList);
@@ -163,3 +164,5 @@ export default function Home() {
     </>
   );
 }
+
+export default withAuth(Home);

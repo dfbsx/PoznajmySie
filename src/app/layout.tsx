@@ -17,7 +17,6 @@ export interface props {
   children?: React.ReactNode;
 }
 
-
 export default function RootLayout({ children }: props) {
   const token = useUserStore((state) => state.token);
   const { createConnection } = useUserStore();
@@ -30,14 +29,13 @@ export default function RootLayout({ children }: props) {
     } else {
       console.log("nie");
     }
-  },[token]);
+  }, [token]);
 
   return (
     <html lang="en" className={biryani.className}>
-      <MantineProvider>
-        <body className={styles.body}>{children}</body>
-      </MantineProvider>
+        <MantineProvider>
+          <body className={styles.body}>{children}</body>
+        </MantineProvider>
     </html>
   );
 }
-

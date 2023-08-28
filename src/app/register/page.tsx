@@ -183,7 +183,7 @@ export default function Login() {
             </div>
             <form
               className={styles.formLayout}
-              onSubmit={form.onSubmit((values) => console.log(values))}
+              onSubmit={form.onSubmit((values) => handleRegister(values))}
             >
               <TextInput
                 placeholder="Lubię jazdę na rowerze"

@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { getUserData } from "@/crud/getUserData";
 import { updateUserData } from "@/crud/updateUserData";
 import { useRouter } from "next/navigation";
+import withAuth from "@/components/withAuth";
 export interface UserData {
   userName: string;
   bio: string;
@@ -21,8 +22,7 @@ export interface UserData {
   university: string;
   major: string;
 }
-
-export default function Edit() {
+ function Edit() {
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState();
   const router = useRouter();
@@ -33,6 +33,7 @@ export default function Edit() {
     university: "",
     major: "",
   });
+  
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("PoznajmySie") || "{}");
@@ -152,3 +153,6 @@ export default function Edit() {
     </div>
   );
 }
+
+export default withAuth(Edit);
+
