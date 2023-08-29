@@ -7,25 +7,24 @@ import {
   createStyles,
   Text,
 } from "@mantine/core";
+const useStyles = createStyles((theme) => ({
+  paper: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    padding: "4px",
+  },
+  text: {
+    display: "flex",
+    flexDirection: "column",
+  },
+}));
 import { IconMessages } from "@tabler/icons-react";
 import useUserStore from "@/app/store/zustand";
 export default function MesagesDrawer({ rooms }: any) {
   const [opened, { open, close }] = useDisclosure(false);
-  const useStyles = createStyles((theme) => ({
-    paper: {
-      display: "flex",
-      alignItems: "center",
-      gap: "8px",
-      padding: "4px",
-    },
-    text: {
-      display: "flex",
-      flexDirection: "column",
-    },
-  }));
   const { classes } = useStyles();
   const { join, setThisUser, setUser } = useUserStore();
-  const user = useUserStore((state) => state.currentUser);
   return (
     <>
       <Drawer opened={opened} onClose={close} title="Twoje wiadomości">

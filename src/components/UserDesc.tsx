@@ -8,6 +8,23 @@ import {
 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
+const useStyles = createStyles((theme) => ({
+  page: {
+    width: "100%",
+    boxSizing: "border-box",
+    marginTop:"16px"
+  },
+  textFlex: {
+    boxSizing: "border-box",
+    alignSelf: "flex-start",
+    borderTop: "1px solid #D9D9D9",
+    paddingTop: "16px",
+    paddingLeft: "24px",
+    paddingRight: "24px",
+    width: "100%",
+  },
+}));
+
 export default function UserDesc() {
   const user = useUserStore((state) => state.currentUser);
 
@@ -36,23 +53,6 @@ export default function UserDesc() {
         });
     }
   }, [user]);
-
-  const useStyles = createStyles((theme) => ({
-    page: {
-      width: "100%",
-      boxSizing: "border-box",
-      marginTop:"16px"
-    },
-    textFlex: {
-      boxSizing: "border-box",
-      alignSelf: "flex-start",
-      borderTop: "1px solid #D9D9D9",
-      paddingTop: "16px",
-      paddingLeft: "24px",
-      paddingRight: "24px",
-      width: "100%",
-    },
-  }));
 
   const { classes } = useStyles();
 

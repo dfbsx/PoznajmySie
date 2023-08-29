@@ -13,6 +13,42 @@ import Message from "./Message";
 import { useMediaQuery } from "@mantine/hooks";
 import HoverInfo from "./HoverInfo";
 
+const useStyles = createStyles((theme) => ({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    gap: "16px",
+    position: "relative",
+  },
+  paper: {
+    display: "flex",
+    padding: "16px",
+    alignItems: "center",
+    justifyContent:"space-between",
+    gap: "16px",
+    background: "#EBEBEB",
+    borderRadius: "3px",
+    borderBottom: "1px solid #F1F1F1",
+  },
+  newMessageField: {
+    border: "1px solid #F1F1F1",
+    background: "#FFFFFD",
+    justifySelf: "flex-end",
+    width: "100%",
+    position: "absolute",
+    bottom: "0",
+  },
+  chat: {
+    marginBottom: "64px",
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    boxSizing: "border-box",
+    gap: "8px",
+  },
+}));
+
 export default function MessageField() {
   const user = useUserStore((state) => state?.currentUser);
   const [message, setThisMessage] = useState("");
@@ -30,42 +66,6 @@ export default function MessageField() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  const useStyles = createStyles((theme) => ({
-    container: {
-      display: "flex",
-      flexDirection: "column",
-      width: "100%",
-      gap: "16px",
-      position: "relative",
-    },
-    paper: {
-      display: "flex",
-      padding: "16px",
-      alignItems: "center",
-      justifyContent:"space-between",
-      gap: "16px",
-      background: "#EBEBEB",
-      borderRadius: "3px",
-      borderBottom: "1px solid #F1F1F1",
-    },
-    newMessageField: {
-      border: "1px solid #F1F1F1",
-      background: "#FFFFFD",
-      justifySelf: "flex-end",
-      width: "100%",
-      position: "absolute",
-      bottom: "0",
-    },
-    chat: {
-      marginBottom: "64px",
-      display: "flex",
-      flexDirection: "column",
-      width: "100%",
-      boxSizing: "border-box",
-      gap: "8px",
-    },
-  }));
 
   const { classes } = useStyles();
 

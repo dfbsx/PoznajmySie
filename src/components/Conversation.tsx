@@ -1,23 +1,24 @@
 import useUserStore from "@/app/store/zustand";
 import { Paper, Avatar, Text, createStyles } from "@mantine/core";
 
+const useStyles = createStyles((theme) => ({
+  paper: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    padding: "4px",
+    transition: "background-color 0.3s ease",
+    "&:hover": {
+      backgroundColor: "#EDF3FA",
+    },
+  },
+  text: {
+    display: "flex",
+    flexDirection: "column",
+  },
+}));
+
 function Conversation({ room }: any) {
-  const useStyles = createStyles((theme) => ({
-    paper: {
-      display: "flex",
-      alignItems: "center",
-      gap: "8px",
-      padding: "4px",
-      transition: "background-color 0.3s ease",
-      "&:hover": {
-        backgroundColor: "#EDF3FA",
-      },
-    },
-    text: {
-      display: "flex",
-      flexDirection: "column",
-    },
-  }));
   const { classes } = useStyles();
   const { join, setThisUser, setUser } = useUserStore();
   const user = useUserStore((state)=>state.currentUser)

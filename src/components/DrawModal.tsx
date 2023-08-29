@@ -10,6 +10,22 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 
+const useStyles = createStyles((theme) => ({
+  icon: {
+    color: "#303030",
+  },
+  input: {
+    borderRadius: "3px",
+    background: "#FFFFFD",
+    boxShadow: "0px 2px 70px 0px rgba(0, 0, 0, 0.1)",
+    padding: "1px",
+    display: "inline-flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+}));
+
 export default function DrawModal() {
   const [opened, { open, close }] = useDisclosure(false);
   interface Person {
@@ -37,22 +53,6 @@ export default function DrawModal() {
       });
   };
 
-  const useStyles = createStyles((theme) => ({
-    icon: {
-      color: "#303030",
-    },
-    input: {
-      borderRadius: "3px",
-      background: "#FFFFFD",
-      boxShadow: "0px 2px 70px 0px rgba(0, 0, 0, 0.1)",
-      padding: "1px",
-      display: "inline-flex",
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-  }));
-
   const { classes } = useStyles();
   return (
     <>
@@ -62,10 +62,7 @@ export default function DrawModal() {
         title="Losuj nowego użytkownika"
         centered
       >
-        <Flex  gap="lg"
-      justify="center"
-      align="center"
-      direction="column">
+        <Flex gap="lg" justify="center" align="center" direction="column">
           <Input
             className={classes.input}
             icon={<IconMapPinFilled className={classes.icon} />}

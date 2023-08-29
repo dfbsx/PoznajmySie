@@ -8,50 +8,46 @@ import {
   IconMapPinFilled,
 } from "@tabler/icons-react";
 import { useState } from "react";
-
+const useStyles = createStyles((theme) => ({
+  icon: {
+    color: "#303030",
+  },
+  input: {
+    borderRadius: "3px",
+    background: "#FFFFFD",
+    boxShadow: "0px 2px 70px 0px rgba(0, 0, 0, 0.1)",
+    padding: "1px",
+    display: "inline-flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+}));
 export default function DrawBar() {
-    interface Person {
-        isUniversity:boolean,
-        isCity:boolean,
-        gender:string,
-    }
-    const [newPerson, setNewPerson] = useState<Person>({
-        isUniversity: false,
-        isCity: true,
-        gender: "",
+  interface Person {
+    isUniversity: boolean;
+    isCity: boolean;
+    gender: string;
+  }
+  const [newPerson, setNewPerson] = useState<Person>({
+    isUniversity: false,
+    isCity: true,
+    gender: "",
+  });
+  const { getRooms, join } = useUserStore();
+
+  const handleDraw = () => {
+    console.log("nowy obiekt", newPerson);
+    draw(newPerson.isUniversity, newPerson.isCity, newPerson.gender)
+      .then((resp) => {
+        console.log("to dostaliśmy", resp.data);
+        getRooms();
+        join(resp.data.roomId);
+      })
+      .catch((err) => {
+        alert("Nie znaleziono odpowiedniego użytkownika :c");
       });
-      const {getRooms, join} = useUserStore();
-
-      const handleDraw = () => {
-        console.log("nowy obiekt", newPerson);
-        draw(newPerson.isUniversity, newPerson.isCity, newPerson.gender)
-          .then((resp) => {
-            console.log("to dostaliśmy", resp.data);
-            getRooms();
-            join(resp.data.roomId);
-          })
-          .catch((err) => {
-            alert("Nie znaleziono odpowiedniego użytkownika :c");
-          });
-      };
-
-      
-          
-  const useStyles = createStyles((theme) => ({
-    icon: {
-      color: "#303030",
-    },
-    input: {
-      borderRadius: "3px",
-      background: "#FFFFFD",
-      boxShadow: "0px 2px 70px 0px rgba(0, 0, 0, 0.1)",
-      padding: "1px",
-      display: "inline-flex",
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-  }));
+  };
 
   const { classes } = useStyles();
   return (

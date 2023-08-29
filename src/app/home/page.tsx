@@ -28,6 +28,15 @@ import { useMediaQuery } from "@mantine/hooks";
 import DrawModal from "@/components/DrawModal";
 import MesagesDrawer from "@/components/MessagesDrawer";
 import withAuth from "@/components/withAuth";
+
+const useStyles = createStyles((theme) => ({
+  page: {
+    background: "#FFFFFD",
+    height: "calc(100vh - 100px)",
+    overflow: "auto",
+  },
+}));
+
 function Home() {
   const [userBio, setUserBio] = useState();
   const [userN, setUserN] = useState();
@@ -36,14 +45,6 @@ function Home() {
   const router = useRouter();
   const matches = useMediaQuery("(max-width: 1184px)");
   const small = useMediaQuery("(max-width: 550px)");
-  const useStyles = createStyles((theme) => ({
-    page: {
-      background: "#FFFFFD",
-      height: "calc(100vh - 100px)",
-      overflow: "auto",
-    },
-  }));
-
   const { classes } = useStyles();
   useEffect(() => {
     const userJSON = localStorage.getItem("PoznajmySie");
