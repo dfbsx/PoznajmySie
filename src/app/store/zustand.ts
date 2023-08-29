@@ -39,47 +39,40 @@ export const useUserStore = create<appData>((set,get) => ({
   roomList: [],
   isLoading: true,
   setAuth: (username, token) =>
-    set((state) => ({
-      ...state,
+    set({
       username,
       token,
-    }))
+    })
     ,
   setRoomList: (roomList) =>
-    set((state) => ({
-      ...state,
+    set({
       roomList,
-    })),
+    }),
   setConnection: (connection) =>
-    set((state) => ({
-      ...state,
+    set({
       connection,
-    })),
+    }),
   setLoading: (isLoading) =>
-    set((state) => ({
-      ...state,
+    set({
       isLoading,
-    })),
+    }),
   setRoomId: (currentRoom) =>
-    set((state) => ({
-      ...state,
+    set({
       currentRoom,
-    })),
+    }),
   setMessage: (messages) =>
-    set((state) => ({
-      ...state,
+    set({
       messages,
-    })),
+    }),
     setNewMessage: (newMessage) =>
     set((state) => ({
       ...state,
       messages: [...state.messages, newMessage],
     })),
   setUser: (currentUser) =>
-    set((state) => ({
-      ...state,
+    set({
       currentUser,
-    })),
+    }),
     authenticate: (username, token) => {
       localStorage.setItem('PoznajmySie', JSON.stringify({ username, token }));
       get().setAuth(username, token);
