@@ -79,6 +79,7 @@ export default function Login() {
         console.log("register data", registerData);
       })
       .catch((error) => {
+        console.log(error)
         alert(
           error.response.data.title
             ? error.response.data.title
