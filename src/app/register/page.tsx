@@ -10,34 +10,32 @@ import {
 import { useRouter } from "next/navigation";
 import styles from "../register/page.module.css";
 import { useState } from "react";
-import { matches, useForm } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { register } from "@/crud/register";
 import { useUserStore } from "../store/zustand";
 
 export default function Login() {
   const { authenticate } = useUserStore();
   const router = useRouter();
-  const [isRegisterError, setIsRegisterError] = useState(false);
-  const [registerError, setRegisterError] = useState("");
   type RegisterForm = {
     email: string;
-    username: string;
+    userName: string;
     password: string;
-    reapetedPassword: string;
+    repeatedPassword: string;
     bio: string;
     city: string;
-    uni: string;
+    university: string;
     major: string;
     gender: string;
   };
   const [registerData, setRegisterData] = useState<RegisterForm>({
     email: "",
-    username: "",
+    userName: "",
     password: "",
-    reapetedPassword: "",
+    repeatedPassword: "",
     bio: "",
     city: "",
-    uni: "",
+    university: "",
     major: "",
     gender: "",
   });
@@ -48,13 +46,13 @@ export default function Login() {
     validate: {
       email: (value) =>
         /^\S+@\S+$/.test(value) ? null : "Niepoprawny format adresu e-mail",
-      username: (value) =>
+      userName: (value) =>
         value.length < 4 ? "Login powinien zawierać co najmniej 4 znaki" : null,
       password: (value) =>
         !/^.*(?=.{8,})(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).*$/g.test(value)
           ? "Hasło powinno zawierać co najmniej 8 znaków, jedną dużą literę, jedną cyfrę i jeden znak specjalny"
           : null,
-      reapetedPassword: (value, values) =>
+      repeatedPassword: (value, values) =>
         value !== values.password ? "Podane hasła się różnią" : null,
     },
   });
@@ -62,15 +60,16 @@ export default function Login() {
   const handleRegister = (values: RegisterForm) => {
     setRegisterData({
       email: values.email,
-      username: values.username,
+      userName: values.userName,
       password: values.password,
-      reapetedPassword: values.reapetedPassword,
+      repeatedPassword: values.repeatedPassword,
       bio: registerData.bio,
       city: registerData.city,
-      uni: registerData.uni,
+      university: registerData.university,
       major: registerData.major,
       gender: registerData.gender,
     });
+    console.log("wartości, values")
     register(values)
       .then((resp) => {
         console.log("Resp", resp);
@@ -137,7 +136,7 @@ export default function Login() {
                 radius="xs"
                 size="md"
                 withAsterisk
-                {...form.getInputProps("username")}
+                {...form.getInputProps("userName")}
               />
               <PasswordInput
                 placeholder="*****"
@@ -153,7 +152,7 @@ export default function Login() {
                 size="md"
                 radius="xs"
                 withAsterisk
-                {...form.getInputProps("reapetedPassword")}
+                {...form.getInputProps("repeatedPassword")}
               />
               <Button
                 color="dark"
@@ -205,7 +204,7 @@ export default function Login() {
                 label="Uczelnia"
                 size="md"
                 radius="xs"
-                {...form.getInputProps("uni")}
+                {...form.getInputProps("university")}
               />
               <TextInput
                 placeholder="Informatyka"
