@@ -5,7 +5,7 @@ import { UserData } from '@/app/edit/page';
 export const updateUserData = (data: UserData, token: any) => {
   return axios({
     method: 'PATCH',
-    url: `${API_URL}/User/update`,
+    url: `${API_URL}/api/Users/change-informations`,
     data:data,
     headers: {
       'Authorization': `Bearer ${token}`, 
