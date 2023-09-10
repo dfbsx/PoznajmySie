@@ -5,7 +5,7 @@ export const getUserDataFromNick = (username: string) => {
   const user = JSON.parse(localStorage.getItem("PoznajmySie") || "{}");
   return axios({
     method: "GET",
-    url: `${API_URL}/User/userName?userName=${username}`,
+    url: `${API_URL}/api/Users/name?userName=${username}`,
     headers: {
       Authorization: `Bearer ${user.token}`,
       "Content-Type": "application/json",

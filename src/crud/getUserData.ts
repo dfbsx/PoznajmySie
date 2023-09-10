@@ -6,7 +6,7 @@ import useAuthStore from '@/app/store/zustand';
 export const getUserData = (token:any) => {
   return axios({
     method: 'GET',
-    url: `${API_URL}/User/info`,
+    url: `${API_URL}/api/Users/me`,
     headers: {
       'Authorization': `Bearer ${token}`, 
       'Content-Type': 'application/json',
