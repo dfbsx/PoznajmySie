@@ -141,7 +141,7 @@ export const useUserStore = create<appData>((set,get) => ({
     },
     createConnection: async (token) => {
       const connection = new HubConnectionBuilder()
-        .withUrl("https://letsmeetapp.azurewebsites.net/chatter",{
+        .withUrl("https://letsmeetapp.azurewebsites.net/chat",{
           accessTokenFactory: () => {
             return token;
           },
