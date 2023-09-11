@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { JSX, useEffect } from "react";
 
 const withAuth = (WrappedComponent: any) => {
-  const AuthenticatedComponent = (props: JSX.IntrinsicAttributes) => {
+  const AuthenticatedComponent = (props: any) => {
     const router = useRouter();
     useEffect(() => {
       const user = JSON.parse(localStorage.getItem("PoznajmySie") || "{}");

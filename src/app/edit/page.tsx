@@ -14,7 +14,9 @@ import { useEffect, useState } from "react";
 import { getUserData } from "@/crud/getUserData";
 import { updateUserData } from "@/crud/updateUserData";
 import { useRouter } from "next/navigation";
+//@ts-ignore
 import withAuth from "@/components/withAuth";
+
 export interface UserData {
   userName: string;
   bio: string;
