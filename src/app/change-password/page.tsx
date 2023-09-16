@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
 import { useSearchParams } from "next/navigation";
 
-export default function Page(){
-    const searchParams = useSearchParams()
- 
-  const search = searchParams.get('search')
-    return(<>
-    Strona
-    <h1>ID z URL: {search}</h1>
-    </>);
+export default function Page() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+  return (
+    <>
+      Strona
+    </>
+  );
 }
