@@ -10,7 +10,8 @@ import { IconAlertCircle } from "@tabler/icons-react";
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const token = searchParams.get("token")?.replace(" ","+");
+  const id = searchParams.get("Id")
   const [error, setError] = useState({
     status: false,
     text: "",
@@ -31,7 +32,8 @@ export default function Page() {
   });
 
   const handleChangePassword = () => {
-    changePassword(form.values, token)
+    console.log("pobrany token",token)
+    changePassword(form.values, token, id)
       .then((resp) => {
         console.log(resp);
         router.push("/login");
