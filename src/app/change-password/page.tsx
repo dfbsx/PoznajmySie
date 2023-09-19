@@ -32,7 +32,6 @@ export default function Page() {
   });
 
   const handleChangePassword = () => {
-    console.log("pobrany token",token)
     changePassword(form.values, token, id)
       .then((resp) => {
         console.log(resp);

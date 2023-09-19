@@ -136,8 +136,8 @@ export default function Login() {
             onSubmit={form.onSubmit((values) => handleLogin(values))}
           >
             <TextInput
-              placeholder="Login"
-              label="Login"
+              placeholder="email@example.com"
+              label="Email"
               radius="xs"
               size="md"
               withAsterisk

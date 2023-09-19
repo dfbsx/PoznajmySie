@@ -44,6 +44,10 @@
     flex-wrap: nowrap;
 }
 
+.indicator{
+    cursor: pointer;
+}
+
 
 @media (max-width: 850px) {
     .buttons {
@@ -53,6 +57,7 @@
     .page {
         justify-content: center;
         align-items: center;
+        transform: scale(0.8);
     }
     .dataColumn{
         align-items: center;

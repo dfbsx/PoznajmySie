@@ -46,6 +46,8 @@ function Home() {
   const matches = useMediaQuery("(max-width: 1184px)");
   const small = useMediaQuery("(max-width: 550px)");
   const { classes } = useStyles();
+  const [userPhoto, setUserPhoto] = useState<string | null>(null);  
+  
   useEffect(() => {
     const userJSON = localStorage.getItem("PoznajmySie");
     const user = userJSON ? JSON.parse(userJSON) : null;
@@ -53,6 +55,7 @@ function Home() {
       .then((resp) => {
         setUserBio(resp.data.bio);
         setUserN(resp.data.userName);
+        setUserPhoto(`data:image/png;base64,${resp.data.photo}`);
       })
       .catch((err) => {
         if (err.response && err.response.data && err.response.data.title) {
@@ -116,7 +119,7 @@ function Home() {
           <Menu withArrow>
             <Menu.Target>
               <UserButton
-                image="https://images.unsplash.com/photo-1514315384763-ba401779410f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=383&q=80"
+                image={`${userPhoto}`}
                 name={userN}
               />
             </Menu.Target>
