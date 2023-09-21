@@ -79,7 +79,6 @@ function Edit() {
   };
 
   const handleUpdatePhoto = () => {
-    console.log("ohto",value)
     const formData = new FormData();
     formData.append('Photo', value);
     changeUserPhoto(formData)
