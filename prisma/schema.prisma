@@ -7,22 +7,26 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:postgres@localhost:3000/poznajmysie?schema=public"
 }
 
 model City {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  unis      Uni[]
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  unis Uni[]
 }
 
 model Uni {
-  id        Int     @id @default(autoincrement())
-  name      String  @unique
-  majors    Major[]
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  majors Major[]
+  City   City?   @relation(fields: [cityId], references: [id])
+  cityId Int?
 }
 
 model Major {
-  id        Int     @id @default(autoincrement())
-  name      String
+  id    Int    @id @default(autoincrement())
+  name  String
+  Uni   Uni?   @relation(fields: [uniId], references: [id])
+  uniId Int?
 }
