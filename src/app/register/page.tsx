@@ -1,5 +1,6 @@
 "use client";
 import {
+  Autocomplete,
   Button,
   Flex,
   Group,
@@ -9,13 +10,28 @@ import {
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import styles from "../register/page.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { register } from "@/crud/register";
 import { useUserStore } from "../store/zustand";
+import { getCities } from "../localcrud/getCities";
 
 export default function Login() {
   const { authenticate } = useUserStore();
+  const [cities, setCities] = useState<{ [key: string]: { name: string } }>({});
+  useEffect(() => {
+    getCities()
+      .then((resp) => {
+        setCities(resp.data.cities)
+      })
+      .catch((err) => {
+        if (err.response && err.response.data && err.response.data.title) {
+          console.log("Błąd:", err.response.data.title);
+        } else {
+          console.log("Wystąpił nieznany błąd:", err);
+        }
+      });
+  }, []);
   const router = useRouter();
   type RegisterForm = {
     email: string;
@@ -69,16 +85,13 @@ export default function Login() {
       major: registerData.major,
       gender: registerData.gender,
     });
-    console.log("wartości, values")
+    console.log("wartości, values");
     register(values)
       .then((resp) => {
-        console.log("Resp", resp);
         authenticate(resp.data.userName, resp.data.token);
         router.push("home");
-        console.log("register data", registerData);
       })
       .catch((error) => {
-        console.log(error)
         alert(
           error.response.data.title
             ? error.response.data.title
@@ -88,6 +101,8 @@ export default function Login() {
   };
 
   const [nextStep, setNextStep] = useState(false);
+  const citiesList = Object.keys(cities)?.map((city, i) => `${cities[city].name}`);
+
   return (
     <main className={styles.mainLayout}>
       <Group position="right" spacing="md" className={styles.buttons}>
@@ -191,6 +206,13 @@ export default function Login() {
                 radius="xs"
                 size="md"
                 {...form.getInputProps("bio")}
+              />
+              <Autocomplete
+                label="Miasto"
+                placeholder="Rzeszów"
+                radius="xs"
+                size="md"
+                data={citiesList}
               />
               <TextInput
                 placeholder="Rzeszów"
