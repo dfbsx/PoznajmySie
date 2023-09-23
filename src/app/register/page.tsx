@@ -15,6 +15,7 @@ import { useForm } from "@mantine/form";
 import { register } from "@/crud/register";
 import { useUserStore } from "../store/zustand";
 import { getCities } from "../localcrud/getCities";
+import { addCity } from "../localcrud/addCity";
 
 export default function Login() {
   const { authenticate } = useUserStore();
@@ -85,7 +86,12 @@ export default function Login() {
       major: registerData.major,
       gender: registerData.gender,
     });
-    console.log("wartości, values");
+    console.log("miasto", form.values.city)
+    if(!citiesList.includes(registerData.city)){
+      addCity(form.values.city)
+      .then((resp :any)=>console.log(resp))
+      .catch((err: any)=>console.log(err))
+    }
     register(values)
       .then((resp) => {
         authenticate(resp.data.userName, resp.data.token);
@@ -213,12 +219,6 @@ export default function Login() {
                 radius="xs"
                 size="md"
                 data={citiesList}
-              />
-              <TextInput
-                placeholder="Rzeszów"
-                label="Miasto"
-                radius="xs"
-                size="md"
                 {...form.getInputProps("city")}
               />
               <TextInput

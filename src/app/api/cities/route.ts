@@ -22,14 +22,15 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(json_response);
   }
 
-  export async function PATCH(request: Request) {
+
+  export async function POST(request: Request) {
+    console.log("tu request",request)
     try {
       const json = await request.json();
-  
       const feedback = await prisma.city.create({
         data: json,
       });
-  
+
       let json_response = {
         status: "success",
         data: {
