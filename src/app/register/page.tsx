@@ -16,10 +16,12 @@ import { register } from "@/crud/register";
 import { useUserStore } from "../store/zustand";
 import { getCities } from "../localcrud/getCities";
 import { addCity } from "../localcrud/addCity";
+import { getUnis } from "../localcrud/getUnis";
 
 export default function Login() {
   const { authenticate } = useUserStore();
   const [cities, setCities] = useState<{ [key: string]: { name: string } }>({});
+  const [unis, setUnis] = useState<{ [key: string]: { name: string } }>({});
   useEffect(() => {
     getCities()
       .then((resp) => {
@@ -32,6 +34,14 @@ export default function Login() {
           console.log("Wystąpił nieznany błąd:", err);
         }
       });
+      getUnis()
+      .then((resp)=>{
+        console.log("resp",resp);
+        setUnis(resp.data.uni)
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
   }, []);
   const router = useRouter();
   type RegisterForm = {
