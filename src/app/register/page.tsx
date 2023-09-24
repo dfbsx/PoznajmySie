@@ -17,11 +17,23 @@ import { useUserStore } from "../store/zustand";
 import { getCities } from "../localcrud/getCities";
 import { addCity } from "../localcrud/addCity";
 import { getUnis } from "../localcrud/getUnis";
+import { getUniByCity } from "../localcrud/getUniByCity";
 
 export default function Login() {
   const { authenticate } = useUserStore();
   const [cities, setCities] = useState<{ [key: string]: { name: string } }>({});
   const [unis, setUnis] = useState<{ [key: string]: { name: string } }>({});
+  const [registerData, setRegisterData] = useState<RegisterForm>({
+    email: "",
+    userName: "",
+    password: "",
+    repeatedPassword: "",
+    bio: "",
+    city: "",
+    university: "",
+    major: "",
+    gender: "",
+  });
   useEffect(() => {
     getCities()
       .then((resp) => {
@@ -34,7 +46,7 @@ export default function Login() {
           console.log("Wystąpił nieznany błąd:", err);
         }
       });
-      getUnis()
+      getUniByCity(registerData.city)
       .then((resp)=>{
         console.log("resp",resp);
         setUnis(resp.data.uni)
@@ -42,7 +54,7 @@ export default function Login() {
       .catch((err)=>{
         console.log(err);
       })
-  }, []);
+  }, [registerData.city]);
   const router = useRouter();
   type RegisterForm = {
     email: string;
@@ -55,17 +67,7 @@ export default function Login() {
     major: string;
     gender: string;
   };
-  const [registerData, setRegisterData] = useState<RegisterForm>({
-    email: "",
-    userName: "",
-    password: "",
-    repeatedPassword: "",
-    bio: "",
-    city: "",
-    university: "",
-    major: "",
-    gender: "",
-  });
+
 
   const form = useForm<RegisterForm>({
     initialValues: registerData,
@@ -102,7 +104,7 @@ export default function Login() {
       .then((resp :any)=>console.log(resp))
       .catch((err: any)=>console.log(err))
     }
-    register(values)
+   /* register(values)
       .then((resp) => {
         authenticate(resp.data.userName, resp.data.token);
         router.push("home");
@@ -113,7 +115,7 @@ export default function Login() {
             ? error.response.data.title
             : "Wystąpił nieznany błąd"
         );
-      });
+      });*/
   };
 
   const [nextStep, setNextStep] = useState(false);

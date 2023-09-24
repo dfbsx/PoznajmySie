@@ -24,7 +24,6 @@ export async function GET(request: NextRequest) {
 
 
   export async function POST(request: Request) {
-    console.log("tu request",request)
     try {
       const json = await request.json();
       const feedback = await prisma.city.create({
