@@ -18,8 +18,8 @@ import { getCities } from "../localcrud/getCities";
 import { addCity } from "../localcrud/addCity";
 import { getUniByCity } from "../localcrud/getUniByCity";
 import { addUni } from "../localcrud/addUni";
-import { getMajor } from "../localcrud/getMajor";
 import { getMajorByUni } from "../localcrud/getMajorByUni";
+import { addMajor } from "../localcrud/addMajor";
 
 export default function Login() {
   const { authenticate } = useUserStore();
@@ -120,6 +120,11 @@ export default function Login() {
       name: form.values.university,
       City: form.values.city,
     };
+    const newMajor = {
+      name: form.values.major,
+      Uni: form.values.university,
+      City: form.values.city,
+    }
     if (!citiesList.includes(registerData.city)) {
       addCity(form.values.city)
         .then((resp: any) => console.log(resp))
@@ -130,7 +135,12 @@ export default function Login() {
         .then((resp) => console.log(resp))
         .catch((err) => console.log(err));
     }
-    /* register(values)
+    if(!majorsList.includes(registerData.major)){
+      addMajor(newMajor)
+      .then((resp)=>console.log(resp))
+      .catch((err)=> console.log(err))
+    }
+    register(values)
       .then((resp) => {
         authenticate(resp.data.userName, resp.data.token);
         router.push("home");
@@ -141,7 +151,7 @@ export default function Login() {
             ? error.response.data.title
             : "Wystąpił nieznany błąd"
         );
-      });*/
+      });
   };
 
   const [nextStep, setNextStep] = useState(false);
