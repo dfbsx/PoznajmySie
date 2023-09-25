@@ -18,6 +18,7 @@ import { getCities } from "../localcrud/getCities";
 import { addCity } from "../localcrud/addCity";
 import { getUniByCity } from "../localcrud/getUniByCity";
 import { addUni } from "../localcrud/addUni";
+import { getMajor } from "../localcrud/getMajor";
 
 export default function Login() {
   const { authenticate } = useUserStore();
@@ -64,6 +65,9 @@ export default function Login() {
       });
 
     if (form.values.city) {
+      getMajor(form.values.city)
+      .then((resp)=>console.log("majors",resp))
+      .catch((err)=> console.log(err))
       getUniByCity(form.values.city)
         .then((resp) => {
           console.log("resp", resp.data.uni);
@@ -73,6 +77,14 @@ export default function Login() {
           console.log(err);
         });
     }
+    getUniByCity(form.values.city)
+        .then((resp) => {
+          console.log("resp", resp.data.uni);
+          setUnis(resp.data.uni);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   }, [form.values.city]);
   const router = useRouter();
   type RegisterForm = {
@@ -287,3 +299,7 @@ export default function Login() {
     </main>
   );
 }
+function getMajors(city: string) {
+  throw new Error("Function not implemented.");
+}
+
