@@ -19,11 +19,13 @@ import { addCity } from "../localcrud/addCity";
 import { getUniByCity } from "../localcrud/getUniByCity";
 import { addUni } from "../localcrud/addUni";
 import { getMajor } from "../localcrud/getMajor";
+import { getMajorByUni } from "../localcrud/getMajorByUni";
 
 export default function Login() {
   const { authenticate } = useUserStore();
   const [cities, setCities] = useState<{ [key: string]: { name: string } }>({});
   const [unis, setUnis] = useState<{ [key: string]: { name: string } }>({});
+  const [majors, setMajors] = useState<{ [key: string]: { name: string } }>({});
   const [registerData, setRegisterData] = useState<RegisterForm>({
     email: "",
     userName: "",
@@ -65,9 +67,7 @@ export default function Login() {
       });
 
     if (form.values.city) {
-      getMajor(form.values.city)
-      .then((resp)=>console.log("majors",resp))
-      .catch((err)=> console.log(err))
+      console.log("step1");
       getUniByCity(form.values.city)
         .then((resp) => {
           console.log("resp", resp.data.uni);
@@ -76,15 +76,20 @@ export default function Login() {
         .catch((err) => {
           console.log(err);
         });
+      const getMajors = {
+        city: form.values.city,
+        university: form.values.university,
+      };
+      if (form.values.university) {
+        console.log("step2");
+        getMajorByUni(getMajors)
+          .then((resp) => {
+            console.log("majors", resp);
+            setMajors(resp.data.major);
+          })
+          .catch((err) => console.log(err));
+      }
     }
-    getUniByCity(form.values.city)
-        .then((resp) => {
-          console.log("resp", resp.data.uni);
-          setUnis(resp.data.uni);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
   }, [form.values.city]);
   const router = useRouter();
   type RegisterForm = {
@@ -98,7 +103,6 @@ export default function Login() {
     major: string;
     gender: string;
   };
-
 
   const handleRegister = (values: RegisterForm) => {
     setRegisterData({
@@ -115,22 +119,18 @@ export default function Login() {
     const newUni = {
       name: form.values.university,
       City: form.values.city,
-    }
-    if(!citiesList.includes(registerData.city)){
+    };
+    if (!citiesList.includes(registerData.city)) {
       addCity(form.values.city)
-      .then((resp :any)=>console.log(resp))
-      .catch((err: any)=>console.log(err))
+        .then((resp: any) => console.log(resp))
+        .catch((err: any) => console.log(err));
     }
-    console.log("all values", form.values);
-    console.log("all registerdata", registerData)
-    console.log("registerdata", registerData.university)
-    console.log("values", values.university)
-    if(!unisList.includes(registerData.university)){
+    if (!unisList.includes(registerData.university)) {
       addUni(newUni)
-      .then((resp)=>console.log(resp))
-      .catch((err)=>console.log(err))
+        .then((resp) => console.log(resp))
+        .catch((err) => console.log(err));
     }
-   /* register(values)
+    /* register(values)
       .then((resp) => {
         authenticate(resp.data.userName, resp.data.token);
         router.push("home");
@@ -145,12 +145,21 @@ export default function Login() {
   };
 
   const [nextStep, setNextStep] = useState(false);
-  const citiesList = Object.keys(cities)?.map((city, i) => `${cities[city].name}`);
-  const unisList = unis && Object.keys(unis).length > 0
-  ? Object.keys(unis).map((uni, i) => {
-      return unis[uni].name;
-    })
-  : [];
+  const citiesList = Object.keys(cities)?.map(
+    (city, i) => `${cities[city].name}`
+  );
+  const unisList =
+    unis && Object.keys(unis).length > 0
+      ? Object.keys(unis).map((uni, i) => {
+          return unis[uni].name;
+        })
+      : [];
+      const majorsList =
+      majors && Object.keys(majors).length > 0
+        ? Object.keys(majors).map((major, i) => {
+            return majors[major].name;
+          })
+        : [];
   return (
     <main className={styles.mainLayout}>
       <Group position="right" spacing="md" className={styles.buttons}>
@@ -263,13 +272,21 @@ export default function Login() {
                 data={citiesList}
                 {...form.getInputProps("city")}
               />
-                <Autocomplete
+              <Autocomplete
                 label="Uczelnia"
                 placeholder="Politechnika Rzeszowska"
                 radius="xs"
                 size="md"
                 data={unisList}
                 {...form.getInputProps("university")}
+              />
+               <Autocomplete
+                label="Kierunek"
+                placeholder="Informatyka"
+                radius="xs"
+                size="md"
+                data={majorsList}
+                {...form.getInputProps("major")}
               />
               <TextInput
                 placeholder="Informatyka"
@@ -302,4 +319,3 @@ export default function Login() {
 function getMajors(city: string) {
   throw new Error("Function not implemented.");
 }
-
