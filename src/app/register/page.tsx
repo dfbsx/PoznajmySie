@@ -90,7 +90,7 @@ export default function Login() {
           .catch((err) => console.log(err));
       }
     }
-  }, [form.values.city]);
+  }, [form.values.city, form.values.university]);
   const router = useRouter();
   type RegisterForm = {
     email: string;
@@ -286,13 +286,6 @@ export default function Login() {
                 radius="xs"
                 size="md"
                 data={majorsList}
-                {...form.getInputProps("major")}
-              />
-              <TextInput
-                placeholder="Informatyka"
-                label="Kierunek"
-                size="md"
-                radius="xs"
                 {...form.getInputProps("major")}
               />
               <Select
