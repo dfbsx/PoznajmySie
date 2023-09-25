@@ -16,8 +16,8 @@ import { register } from "@/crud/register";
 import { useUserStore } from "../store/zustand";
 import { getCities } from "../localcrud/getCities";
 import { addCity } from "../localcrud/addCity";
-import { getUnis } from "../localcrud/getUnis";
 import { getUniByCity } from "../localcrud/getUniByCity";
+import { addUni } from "../localcrud/addUni";
 
 export default function Login() {
   const { authenticate } = useUserStore();
@@ -34,41 +34,6 @@ export default function Login() {
     major: "",
     gender: "",
   });
-  useEffect(() => {
-    getCities()
-      .then((resp) => {
-        setCities(resp.data.cities)
-      })
-      .catch((err) => {
-        if (err.response && err.response.data && err.response.data.title) {
-          console.log("Błąd:", err.response.data.title);
-        } else {
-          console.log("Wystąpił nieznany błąd:", err);
-        }
-      });
-      getUniByCity(registerData.city)
-      .then((resp)=>{
-        console.log("resp",resp);
-        setUnis(resp.data.uni)
-      })
-      .catch((err)=>{
-        console.log(err);
-      })
-  }, [registerData.city]);
-  const router = useRouter();
-  type RegisterForm = {
-    email: string;
-    userName: string;
-    password: string;
-    repeatedPassword: string;
-    bio: string;
-    city: string;
-    university: string;
-    major: string;
-    gender: string;
-  };
-
-
   const form = useForm<RegisterForm>({
     initialValues: registerData,
     validateInputOnChange: true,
@@ -85,6 +50,43 @@ export default function Login() {
         value !== values.password ? "Podane hasła się różnią" : null,
     },
   });
+  useEffect(() => {
+    getCities()
+      .then((resp) => {
+        setCities(resp.data.cities);
+      })
+      .catch((err) => {
+        if (err.response && err.response.data && err.response.data.title) {
+          console.log("Błąd:", err.response.data.title);
+        } else {
+          console.log("Wystąpił nieznany błąd:", err);
+        }
+      });
+
+    if (form.values.city) {
+      getUniByCity(form.values.city)
+        .then((resp) => {
+          console.log("resp", resp.data.uni);
+          setUnis(resp.data.uni);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [form.values.city]);
+  const router = useRouter();
+  type RegisterForm = {
+    email: string;
+    userName: string;
+    password: string;
+    repeatedPassword: string;
+    bio: string;
+    city: string;
+    university: string;
+    major: string;
+    gender: string;
+  };
+
 
   const handleRegister = (values: RegisterForm) => {
     setRegisterData({
@@ -98,11 +100,23 @@ export default function Login() {
       major: registerData.major,
       gender: registerData.gender,
     });
-    console.log("miasto", form.values.city)
+    const newUni = {
+      name: form.values.university,
+      City: form.values.city,
+    }
     if(!citiesList.includes(registerData.city)){
       addCity(form.values.city)
       .then((resp :any)=>console.log(resp))
       .catch((err: any)=>console.log(err))
+    }
+    console.log("all values", form.values);
+    console.log("all registerdata", registerData)
+    console.log("registerdata", registerData.university)
+    console.log("values", values.university)
+    if(!unisList.includes(registerData.university)){
+      addUni(newUni)
+      .then((resp)=>console.log(resp))
+      .catch((err)=>console.log(err))
     }
    /* register(values)
       .then((resp) => {
@@ -120,7 +134,11 @@ export default function Login() {
 
   const [nextStep, setNextStep] = useState(false);
   const citiesList = Object.keys(cities)?.map((city, i) => `${cities[city].name}`);
-
+  const unisList = unis && Object.keys(unis).length > 0
+  ? Object.keys(unis).map((uni, i) => {
+      return unis[uni].name;
+    })
+  : [];
   return (
     <main className={styles.mainLayout}>
       <Group position="right" spacing="md" className={styles.buttons}>
@@ -233,11 +251,12 @@ export default function Login() {
                 data={citiesList}
                 {...form.getInputProps("city")}
               />
-              <TextInput
-                placeholder="Politechnika Rzeszowska"
+                <Autocomplete
                 label="Uczelnia"
-                size="md"
+                placeholder="Politechnika Rzeszowska"
                 radius="xs"
+                size="md"
+                data={unisList}
                 {...form.getInputProps("university")}
               />
               <TextInput

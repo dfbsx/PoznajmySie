@@ -27,7 +27,6 @@ export default function RootLayout({ children }: props) {
       setupAxios(user?.token);
       createConnection(user?.token);
     } else {
-      console.log("nie");
     }
   }, [token]);
 
