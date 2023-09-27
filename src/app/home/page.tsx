@@ -47,9 +47,9 @@ function Home() {
   const small = useMediaQuery("(max-width: 550px)");
   const { classes } = useStyles();
   const [userPhoto, setUserPhoto] = useState<string | null>(null);  
-  
   useEffect(() => {
     const userJSON = localStorage.getItem("PoznajmySie");
+    console.log("pokoje", roomList)
     const user = userJSON ? JSON.parse(userJSON) : null;
     getUserData(user?.token)
       .then((resp) => {

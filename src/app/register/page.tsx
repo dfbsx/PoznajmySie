@@ -21,7 +21,7 @@ import { addUni } from "../localcrud/addUni";
 import { getMajorByUni } from "../localcrud/getMajorByUni";
 import { addMajor } from "../localcrud/addMajor";
 
-export default function Login() {
+export default function Register() {
   const { authenticate } = useUserStore();
   const [cities, setCities] = useState<{ [key: string]: { name: string } }>({});
   const [unis, setUnis] = useState<{ [key: string]: { name: string } }>({});
@@ -67,10 +67,8 @@ export default function Login() {
       });
 
     if (form.values.city) {
-      console.log("step1");
       getUniByCity(form.values.city)
         .then((resp) => {
-          console.log("resp", resp.data.uni);
           setUnis(resp.data.uni);
         })
         .catch((err) => {
@@ -81,10 +79,8 @@ export default function Login() {
         university: form.values.university,
       };
       if (form.values.university) {
-        console.log("step2");
         getMajorByUni(getMajors)
           .then((resp) => {
-            console.log("majors", resp);
             setMajors(resp.data.major);
           })
           .catch((err) => console.log(err));
