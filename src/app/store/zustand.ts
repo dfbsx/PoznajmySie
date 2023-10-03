@@ -81,13 +81,15 @@ export const useUserStore = create<appData>((set,get) => ({
     {
       get().setLoading(true);
       const connection = get().connection;
-      await connection.invoke('GetRoomsList')
-      .then((rooms:any)=>{
-        get().setRoomList(rooms);
-      })
-      .catch((error: any)=>{
-        console.log(error)
-      })
+      if (connection) {
+        await connection.invoke('GetRoomsList')
+        .then((rooms:any)=>{
+          
+        })
+        .catch((error: any)=>{
+          console.log(error)
+        })
+      } 
     },
     leaveRoom: async()=>{
       const connection = get().connection;
@@ -140,6 +142,7 @@ export const useUserStore = create<appData>((set,get) => ({
       get().setRoomList([...current, roomId]);
     },
     createConnection: async (token) => {
+      console.log("tworzenie połączenia1")
       const connection = new HubConnectionBuilder()
         .withUrl("https://letsmeetapp.azurewebsites.net/chat",{
           accessTokenFactory: () => {
@@ -149,8 +152,7 @@ export const useUserStore = create<appData>((set,get) => ({
         })
         .configureLogging(LogLevel.Information)
         .build();
-        
-      connection.on("ReceiveCurrentAgentRoomList", (rooms) => {
+      connection.on("ReceiveRooms", (rooms) => {
         get().setRoomList(rooms);
       });
       connection.on("ReceiveMessage", (message) => {

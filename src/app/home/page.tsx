@@ -40,16 +40,16 @@ const useStyles = createStyles((theme) => ({
 function Home() {
   const [userBio, setUserBio] = useState();
   const [userN, setUserN] = useState();
-  const roomList = useUserStore((state) => state.roomList);
+  const rooms = useUserStore((state) => state.roomList);
   const currentUser = useUserStore((state) => state.currentUser);
   const router = useRouter();
   const matches = useMediaQuery("(max-width: 1184px)");
   const small = useMediaQuery("(max-width: 550px)");
   const { classes } = useStyles();
-  const [userPhoto, setUserPhoto] = useState<string | null>(null);  
+  const [userPhoto, setUserPhoto] = useState<string | null | undefined>("home");  
   useEffect(() => {
     const userJSON = localStorage.getItem("PoznajmySie");
-    console.log("pokoje", roomList)
+    console.log("pokoje", rooms);
     const user = userJSON ? JSON.parse(userJSON) : null;
     getUserData(user?.token)
       .then((resp) => {
@@ -64,9 +64,8 @@ function Home() {
           console.log("Wystąpił nieznany błąd:", err);
         }
       });
-  }, [userBio, roomList]);
+  }, [userBio, rooms]);
 
-  const rooms = useUserStore((state) => state.roomList);
 
   const logout = () =>{
     localStorage.removeItem("PoznajmySie");
@@ -141,7 +140,7 @@ function Home() {
           </Menu>
         </Group>
         <Group>
-          {small ? <MesagesDrawer rooms={roomList} /> : null}
+          {small ? <MesagesDrawer rooms={rooms} /> : null}
           {matches ? <DrawModal /> : <DrawBar />}
         </Group>
       </Header>
@@ -162,7 +161,7 @@ function Home() {
           </div>
         )}
         <div className={styles.messageField}>
-          {roomList?.length === 0 ? <NoMessages /> : <MessageField />}
+          {rooms?.length === 0 ? <NoMessages /> : <MessageField />}
         </div>
         {currentUser == "" || matches ? null : (
           <div className={styles.userDescription}>
