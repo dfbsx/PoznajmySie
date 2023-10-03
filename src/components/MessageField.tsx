@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import { useMediaQuery } from "@mantine/hooks";
 import HoverInfo from "./HoverInfo";
+import { getUserDataFromNick } from "@/crud/getUserDataFromNick";
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -27,7 +28,7 @@ const useStyles = createStyles((theme) => ({
     alignItems: "center",
     justifyContent:"space-between",
     gap: "16px",
-    background: "#EBEBEB",
+    background: "#FCFCFC",
     borderRadius: "3px",
     borderBottom: "1px solid #F1F1F1",
   },
@@ -51,6 +52,12 @@ const useStyles = createStyles((theme) => ({
 
 export default function MessageField() {
   const user = useUserStore((state) => state?.currentUser);
+  const [userPhoto, setUserPhoto] = useState<string | null | undefined>("");  
+  useEffect(() => {
+    getUserDataFromNick(user)
+    .then((resp)=> setUserPhoto(`data:image/png;base64,${resp.data.photo}`))
+    .catch((err)=>console.log(err))
+  }, [user]);
   const [message, setThisMessage] = useState("");
   const messages = useUserStore((state) => state?.messages);
   const { sendMessage } = useUserStore();
@@ -87,7 +94,7 @@ export default function MessageField() {
           <Avatar
             size="lg"
             radius="xl"
-            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
+            src={`${userPhoto}`}
           />
           <Text fz="lg" fw={500}>
             {user}

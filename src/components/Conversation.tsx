@@ -1,5 +1,7 @@
 import useUserStore from "@/app/store/zustand";
+import { getUserDataFromNick } from "@/crud/getUserDataFromNick";
 import { Paper, Avatar, Text, createStyles } from "@mantine/core";
+import { useEffect, useState } from "react";
 
 const useStyles = createStyles((theme) => ({
   paper: {
@@ -19,6 +21,12 @@ const useStyles = createStyles((theme) => ({
 }));
 
 function Conversation({ room }: any) {
+  const [userPhoto, setUserPhoto] = useState<string | null | undefined>("");  
+  useEffect(() => {
+    getUserDataFromNick(room?.roomName)
+    .then((resp)=> setUserPhoto(`data:image/png;base64,${resp.data.photo}`))
+    .catch((err)=>console.log(err))
+  }, [room?.roomName]);
   const { classes } = useStyles();
   const { join, setThisUser, setUser } = useUserStore();
   const user = useUserStore((state)=>state.currentUser)
@@ -32,9 +40,9 @@ function Conversation({ room }: any) {
       }}
     >
       <Avatar
-        size="lg"
+        size="md"
         radius="xl"
-        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
+        src={`${userPhoto}`}
       />
       <div className={classes.text}>
         <Text fw={500}>{room.roomName ? room.roomName : "Pokój usunięty"}</Text>

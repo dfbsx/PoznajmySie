@@ -27,7 +27,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function UserDesc() {
   const user = useUserStore((state) => state.currentUser);
-
+  const [userPhoto, setUserPhoto] = useState<string | null | undefined>("");  
   interface UserData {
     userName: string;
     bio: string;
@@ -41,8 +41,8 @@ export default function UserDesc() {
     if (user !== "") {
       getUserDataFromNick(user)
         .then((resp) => {
-          console.log(resp);
           setUserInfo(resp.data);
+          setUserPhoto(`data:image/png;base64,${resp.data.photo}`)
         })
         .catch((err) => {
           if (err.response && err.response.data && err.response.data.title) {
@@ -66,7 +66,7 @@ export default function UserDesc() {
         <Avatar
           size={120}
           radius={120}
-          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
+          src={`${userPhoto}`}
         />
         <Space h="xl" />
         <Flex
