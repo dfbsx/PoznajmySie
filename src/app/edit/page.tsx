@@ -36,6 +36,7 @@ function Edit() {
   const [value, setValue] = useState<any>();
   const [opened, { open, close }] = useDisclosure(false);
   const [refresh, setRefresh] = useState(false);
+  const [serverError, setServerError] = useState(false);
   const [userData, setUserData] = useState<UserData>({
     userName: "",
     bio: "",
@@ -80,14 +81,16 @@ function Edit() {
 
   const handleUpdatePhoto = () => {
     const formData = new FormData();
-    formData.append('Photo', value);
+    formData.append("Photo", value);
     changeUserPhoto(formData)
       .then((resp) => {
         console.log(resp);
         setRefresh(!refresh);
+        setServerError(false);
       })
       .catch((err) => {
         console.log(err);
+        setServerError(true);
       });
   };
 
@@ -99,7 +102,8 @@ function Edit() {
           label="Wybierz nowe zdjęcie"
           description="Kliknij w pole"
           placeholder="Wybierz z komputera..."
-          icon={<IconUpload size={14}/>}
+          error={serverError === true ? "Zbyt duży rozmiar pliku! :( " : null}
+          icon={<IconUpload size={14} />}
           value={value}
           onChange={setValue}
         />

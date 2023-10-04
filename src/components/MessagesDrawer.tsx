@@ -21,10 +21,48 @@ const useStyles = createStyles((theme) => ({
 }));
 import { IconMessages } from "@tabler/icons-react";
 import useUserStore from "@/app/store/zustand";
-export default function MesagesDrawer({ rooms }: any) {
+import { useEffect, useState } from "react";
+import { getUserDataFromNick } from "@/crud/getUserDataFromNick";
+
+export default function MessagesDrawer({ rooms }: any) {
   const [opened, { open, close }] = useDisclosure(false);
   const { classes } = useStyles();
   const { join, setThisUser, setUser } = useUserStore();
+  const [userPhotos, setUserPhotos] = useState<Record<string, string | null>>(
+    {}
+  );
+
+  useEffect(() => {
+    const fetchUserPhotos = async () => {
+      const userPhotoPromises = rooms?.map(async (room: any) => {
+        try {
+          const resp = await getUserDataFromNick(room?.roomName);
+          return {
+            roomName: room.roomName,
+            photo: `data:image/png;base64,${resp.data.photo}`,
+          };
+        } catch (err) {
+          console.log(err);
+          return {
+            roomName: room.roomName,
+            photo: null,
+          };
+        }
+      });
+
+      const userPhotoResults = await Promise.all(userPhotoPromises);
+      const userPhotoMap: Record<string, string | null> = {};
+
+      userPhotoResults.forEach((result) => {
+        userPhotoMap[result.roomName] = result.photo;
+      });
+
+      setUserPhotos(userPhotoMap);
+    };
+
+    fetchUserPhotos();
+  }, [rooms]);
+
   return (
     <>
       <Drawer opened={opened} onClose={close} title="Twoje wiadomości">
@@ -41,7 +79,7 @@ export default function MesagesDrawer({ rooms }: any) {
             <Avatar
               size="lg"
               radius="xl"
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
+              src={userPhotos[room.roomName] || ""}
             />
             <div className={classes.text}>
               <Text fw={500}>

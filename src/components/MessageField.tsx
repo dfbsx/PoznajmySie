@@ -113,7 +113,7 @@ export default function MessageField() {
         viewportRef={viewport}
       >
         {messages.length === 0 ? (
-          <p style={{ fontStyle: "italic" }}>Rozpocznij konwersację</p>
+          <p style={{ fontStyle: "italic" }}>Wybierz lub rozpocznij nową konwersację</p>
         ) : (
           messages.map((mess, index) => <Message message={mess} key={index} />)
         )}
