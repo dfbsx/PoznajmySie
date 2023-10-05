@@ -1,6 +1,17 @@
 import useUserStore from "@/app/store/zustand";
+import { deleteRoom } from "@/crud/deleteRoom";
 import { getUserDataFromNick } from "@/crud/getUserDataFromNick";
-import { Avatar, Flex, Group, Text, Space, createStyles } from "@mantine/core";
+import {
+  Avatar,
+  Flex,
+  Group,
+  Text,
+  Space,
+  createStyles,
+  Button,
+  Modal,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
   IconBuildingBank,
   IconMapPinFilled,
@@ -12,7 +23,7 @@ const useStyles = createStyles((theme) => ({
   page: {
     width: "100%",
     boxSizing: "border-box",
-    marginTop:"16px"
+    marginTop: "16px",
   },
   textFlex: {
     boxSizing: "border-box",
@@ -23,11 +34,20 @@ const useStyles = createStyles((theme) => ({
     paddingRight: "24px",
     width: "100%",
   },
+  mainFlex: {
+    height: "90%",
+    boxSizing: "border-box",
+  },
+  deleteButton: {
+    alignSelf: "flex-end",
+    marginTop: "16px",
+  },
 }));
 
-export default function UserDesc() {
+export default function UserDesc({roomId} : any) {
   const user = useUserStore((state) => state.currentUser);
-  const [userPhoto, setUserPhoto] = useState<string | null | undefined>("");  
+  const [opened, { open, close }] = useDisclosure(false);
+  const [userPhoto, setUserPhoto] = useState<string | null | undefined>("");
   interface UserData {
     userName: string;
     bio: string;
@@ -42,7 +62,7 @@ export default function UserDesc() {
       getUserDataFromNick(user)
         .then((resp) => {
           setUserInfo(resp.data);
-          setUserPhoto(`data:image/png;base64,${resp.data.photo}`)
+          setUserPhoto(`data:image/png;base64,${resp.data.photo}`);
         })
         .catch((err) => {
           if (err.response && err.response.data && err.response.data.title) {
@@ -54,6 +74,12 @@ export default function UserDesc() {
     }
   }, [user]);
 
+  const deleteConversation = () => {
+    deleteRoom(roomId)
+    .then((resp)=>console.log(resp))
+    .catch((err)=>console.log(err))
+  }
+
   const { classes } = useStyles();
 
   if (!userInfo) {
@@ -62,12 +88,30 @@ export default function UserDesc() {
 
   return (
     <div className={classes.page}>
-      <Flex gap="md" align="center" direction="column" wrap="wrap">
-        <Avatar
-          size={120}
-          radius={120}
-          src={`${userPhoto}`}
-        />
+      <Modal
+        opened={opened}
+        onClose={close}
+        centered
+        title="Czy na pewno chcesz usunąć konwersację?"
+      >
+        <Group  grow>
+          <Button variant="outline" color="dark">
+            Anuluj
+          </Button>
+          <Button variant="filled" color="red" onClick={()=>deleteConversation()}>
+            Usuń
+          </Button>
+        </Group>
+      </Modal>
+      <Flex
+        gap="md"
+        align="center"
+        direction="column"
+        wrap="wrap"
+        justify="flex-start"
+        className={classes.mainFlex}
+      >
+        <Avatar size={120} radius={120} src={`${userPhoto}`} />
         <Space h="xl" />
         <Flex
           direction="column"
@@ -102,6 +146,15 @@ export default function UserDesc() {
           </Group>
         </Flex>
       </Flex>
+      <Button
+        fullWidth
+        color="red"
+        radius="xs"
+        onClick={open}
+        className={classes.deleteButton}
+      >
+        Usuń konwersację
+      </Button>
     </div>
   );
 }

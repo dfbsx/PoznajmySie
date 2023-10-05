@@ -1,7 +1,5 @@
 import axios from 'axios';
 import API_URL  from './configuration';
-import useAuthStore from '@/app/store/zustand';
-
 
 export const getUserData = (token:any) => {
   return axios({

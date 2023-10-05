@@ -4,9 +4,17 @@ import styles from "./page.module.css";
 import girlGraphic from "../../public/startpagegraphic.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
   const router = useRouter();
+  useEffect(() => {
+    const userJSON = localStorage.getItem("PoznajmySie");
+    if(userJSON){
+      router.push("/home");
+    }
+   
+  }, []);
   return (
     <main>
       <Group position="right" spacing="md" className={styles.buttons}>

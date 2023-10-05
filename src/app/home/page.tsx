@@ -40,6 +40,7 @@ const useStyles = createStyles((theme) => ({
 function Home() {
   const [userBio, setUserBio] = useState();
   const [userN, setUserN] = useState();
+  const [roomId,setRoomId]=useState();
   const rooms = useUserStore((state) => state.roomList);
   const currentUser = useUserStore((state) => state.currentUser);
   const router = useRouter();
@@ -49,7 +50,9 @@ function Home() {
   const [userPhoto, setUserPhoto] = useState<string | null | undefined>("home");  
   useEffect(() => {
     const userJSON = localStorage.getItem("PoznajmySie");
-    console.log("pokoje", rooms);
+    console.log(rooms)
+    const roomsFilter = rooms?.find(room => room.roomName === currentUser);
+    setRoomId(roomsFilter?.roomId)
     const user = userJSON ? JSON.parse(userJSON) : null;
     getUserData(user?.token)
       .then((resp) => {
@@ -165,7 +168,7 @@ function Home() {
         </div>
         {currentUser == "" || matches ? null : (
           <div className={styles.userDescription}>
-            <UserDesc />
+            <UserDesc roomId={roomId}/>
           </div>
         )}
       </Flex>
