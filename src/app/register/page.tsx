@@ -13,7 +13,7 @@ import styles from "../register/page.module.css";
 import { useEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { register } from "@/crud/register";
-import { useStoreActions, useUserStore } from "../store/zustand";
+import { useStoreActions} from "../store/zustand";
 import { getCities } from "../localcrud/getCities";
 import { addCity } from "../localcrud/addCity";
 import { getUniByCity } from "../localcrud/getUniByCity";
@@ -315,6 +315,5 @@ export default function Register() {
     </main>
   );
 }
-function getMajors(city: string) {
-  throw new Error("Function not implemented.");
-}
+
+

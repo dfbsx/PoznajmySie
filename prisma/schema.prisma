@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = API_URL
+  url      = "postgresql://postgres:postgres@localhost:5432/poznajmysie"
 }
 
 model City {
