@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import styles from "../login/page.module.css";
 import { useForm } from "@mantine/form";
 import { login } from "@/crud/login";
-import { useUserStore } from "../store/zustand";
+import { useStoreActions, useUserStore } from "../store/zustand";
 import { useState } from "react";
 import { IconAlertCircle, IconAt } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
@@ -21,7 +21,7 @@ import { forgotPassword } from "@/crud/forgotPassword";
 
 export default function Login() {
   const [opened, { open, close }] = useDisclosure(false);
-  const { authenticate } = useUserStore();
+  const { authenticate } = useStoreActions();
   const router = useRouter();
   const [isLoginError, setIsLoginError] = useState(false);
   const [LoginError, setLoginError] = useState("");

@@ -1,4 +1,4 @@
-import useUserStore from "@/app/store/zustand";
+import useUserStore, { useStoreActions } from "@/app/store/zustand";
 import { draw } from "@/crud/draw";
 import { Button, Group, Input, createStyles } from "@mantine/core";
 import {
@@ -34,7 +34,7 @@ export default function DrawBar() {
     isCity: true,
     gender: "",
   });
-  const { getRooms, join } = useUserStore();
+  const { getRooms, join } = useStoreActions();
 
   const handleDraw = () => {
     console.log("nowy obiekt", newPerson);

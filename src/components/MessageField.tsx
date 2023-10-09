@@ -1,4 +1,4 @@
-import useUserStore from "@/app/store/zustand";
+import useUserStore, { useStoreActions } from "@/app/store/zustand";
 import {
   Paper,
   Avatar,
@@ -60,7 +60,7 @@ export default function MessageField() {
   }, [user]);
   const [message, setThisMessage] = useState("");
   const messages = useUserStore((state) => state?.messages);
-  const { sendMessage } = useUserStore();
+  const { sendMessage } = useStoreActions();
   const viewport = useRef<HTMLDivElement>(null);
   const matches = useMediaQuery("(max-width: 1184px)");
 

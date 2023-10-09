@@ -13,7 +13,7 @@ import styles from "../register/page.module.css";
 import { useEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { register } from "@/crud/register";
-import { useUserStore } from "../store/zustand";
+import { useStoreActions, useUserStore } from "../store/zustand";
 import { getCities } from "../localcrud/getCities";
 import { addCity } from "../localcrud/addCity";
 import { getUniByCity } from "../localcrud/getUniByCity";
@@ -22,7 +22,7 @@ import { getMajorByUni } from "../localcrud/getMajorByUni";
 import { addMajor } from "../localcrud/addMajor";
 
 export default function Register() {
-  const { authenticate } = useUserStore();
+  const { authenticate } = useStoreActions();
   const [cities, setCities] = useState<{ [key: string]: { name: string } }>({});
   const [unis, setUnis] = useState<{ [key: string]: { name: string } }>({});
   const [majors, setMajors] = useState<{ [key: string]: { name: string } }>({});

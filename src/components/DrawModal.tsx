@@ -1,4 +1,4 @@
-import useUserStore from "@/app/store/zustand";
+import useUserStore, { useStoreActions } from "@/app/store/zustand";
 import { draw } from "@/crud/draw";
 import { Button, Flex, Group, Input, Modal, createStyles } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -38,7 +38,7 @@ export default function DrawModal() {
     isCity: true,
     gender: "",
   });
-  const { getRooms, join } = useUserStore();
+  const { getRooms, join } = useStoreActions();
 
   const handleDraw = () => {
     console.log("nowy obiekt", newPerson);

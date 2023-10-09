@@ -20,14 +20,14 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 import { IconMessages } from "@tabler/icons-react";
-import useUserStore from "@/app/store/zustand";
+import useUserStore, { useStoreActions } from "@/app/store/zustand";
 import { useEffect, useState } from "react";
 import { getUserDataFromNick } from "@/crud/getUserDataFromNick";
 
 export default function MessagesDrawer({ rooms }: any) {
   const [opened, { open, close }] = useDisclosure(false);
   const { classes } = useStyles();
-  const { join, setThisUser, setUser } = useUserStore();
+  const { join, setThisUser, setUser } = useStoreActions();
   const [userPhotos, setUserPhotos] = useState<Record<string, string | null>>(
     {}
   );
