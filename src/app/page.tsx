@@ -13,7 +13,6 @@ export default function Page() {
     if(userJSON){
       router.push("/home");
     }
-   
   }, []);
   return (
     <main>

@@ -4,7 +4,7 @@ import { MantineProvider } from "../components/mantine";
 import styles from "./globals.module.css";
 import { Biryani } from "next/font/google";
 import { useEffect } from "react";
-import { useUserStore } from "../app/store/zustand";
+import { useStoreActions, useUserStore } from "../app/store/zustand";
 
 const biryani = Biryani({
   weight: ["400", "700"],
@@ -19,7 +19,7 @@ export interface props {
 
 export default function RootLayout({ children }: props) {
   const token = useUserStore((state) => state.token);
-  const { createConnection } = useUserStore();
+  const { createConnection } = useStoreActions();
   useEffect(() => {
     const userJSON = localStorage.getItem("PoznajmySie");
     const user = userJSON ? JSON.parse(userJSON) : null;

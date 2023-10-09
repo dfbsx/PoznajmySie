@@ -1,4 +1,4 @@
-import useUserStore from "@/app/store/zustand";
+import useUserStore, { useStoreActions } from "@/app/store/zustand";
 import { getUserDataFromNick } from "@/crud/getUserDataFromNick";
 import { Paper, Avatar, Text, createStyles } from "@mantine/core";
 import { useEffect, useState } from "react";
@@ -28,7 +28,7 @@ function Conversation({ room }: any) {
     .catch((err)=>console.log(err))
   }, [room?.roomName]);
   const { classes } = useStyles();
-  const { join, setThisUser, setUser } = useUserStore();
+  const { join, setThisUser, setUser } = useStoreActions();
   const user = useUserStore((state)=>state.currentUser)
   return (
     <Paper
