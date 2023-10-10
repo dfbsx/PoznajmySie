@@ -1,5 +1,6 @@
 "use client";
 import {
+  Autocomplete,
   Avatar,
   Button,
   FileInput,
@@ -20,6 +21,12 @@ import { useRouter } from "next/navigation";
 import withAuth from "@/components/withAuth";
 import { useDisclosure } from "@mantine/hooks";
 import { changeUserPhoto } from "@/crud/changeUserPhoto";
+import { getCities } from "../localcrud/getCities";
+import { getUniByCity } from "../localcrud/getUniByCity";
+import { getMajorByUni } from "../localcrud/getMajorByUni";
+import { getUnis } from "../localcrud/getUnis";
+import { getMajor } from "../localcrud/getMajor";
+import { useForm } from "@mantine/form";
 
 export interface UserData {
   userName: string;
@@ -31,6 +38,9 @@ export interface UserData {
 function Edit() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const [cities, setCities] = useState<{ [key: string]: { name: string } }>({});
+  const [unis, setUnis] = useState<{ [key: string]: { name: string } }>({});
+  const [majors, setMajors] = useState<{ [key: string]: { name: string } }>({});
   const [token, setToken] = useState();
   const [userPhoto, setUserPhoto] = useState<string | null>(null);
   const [value, setValue] = useState<any>();
@@ -43,6 +53,9 @@ function Edit() {
     city: "",
     university: "",
     major: "",
+  });
+  const form = useForm<UserData>({
+    initialValues: userData,
   });
 
   useEffect(() => {
@@ -62,7 +75,30 @@ function Edit() {
             : "Wystąpił nieznany błąd"
         );
       });
-  }, [refresh]);
+    console.log("userdata", userData);
+    getCities()
+      .then((resp) => setCities(resp.data.cities))
+      .catch((err) => console.log(err));
+    const selectedCity =
+      form.values.city === "" ? userData.city : form.values.city;
+    getUniByCity(selectedCity)
+      .then((resp) => {
+        setUnis(resp.data.uni);
+        console.log(resp.data.uni);
+        console.log(selectedCity);
+      })
+      .catch((err) => console.log(err));
+      const getMajors = {
+        city: form.values.city===""?userData.city:form.values.city,
+        university: form.values.university===""?userData.university:form.values.university,
+      };
+    getMajorByUni(getMajors)
+      .then((resp) => {
+        setMajors(resp.data.major)
+      })
+      .catch((err) => console.log(err));
+
+  }, [refresh, form.values]);
 
   const handleUpdateData = () => {
     updateUserData(userData, token)
@@ -93,7 +129,21 @@ function Edit() {
         setServerError(true);
       });
   };
-
+  const citiesList = Object.keys(cities)?.map(
+    (city, i) => `${cities[city].name}`
+  );
+  const unisList =
+    unis && Object.keys(unis).length > 0
+      ? Object.keys(unis).map((uni, i) => {
+          return unis[uni].name;
+        })
+      : [];
+  const majorsList =
+    majors && Object.keys(majors).length > 0
+      ? Object.keys(majors).map((major, i) => {
+          return majors[major].name;
+        })
+      : [];
   return (
     <div className={styles.page}>
       <Modal opened={opened} onClose={close} title="Zmień zdjęcie profilowe">
@@ -151,30 +201,32 @@ function Edit() {
             value={userData.bio}
             onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
           />
-          <TextInput
+          <Autocomplete
             className={styles.input}
             label="Miasto"
+            placeholder={userData.city}
+            radius="xs"
             size="md"
-            value={userData.city}
-            onChange={(e) => setUserData({ ...userData, city: e.target.value })}
+            data={citiesList}
+            {...form.getInputProps("city")}
           />
-          <TextInput
+          <Autocomplete
             className={styles.input}
             label="Uczelnia"
+            placeholder={userData.university}
+            radius="xs"
             size="md"
-            value={userData.university}
-            onChange={(e) =>
-              setUserData({ ...userData, university: e.target.value })
-            }
+            data={unisList}
+            {...form.getInputProps("university")}
           />
-          <TextInput
+          <Autocomplete
             className={styles.input}
             label="Kierunek"
+            placeholder={userData.major}
+            radius="xs"
             size="md"
-            value={userData.major}
-            onChange={(e) =>
-              setUserData({ ...userData, major: e.target.value })
-            }
+            data={majorsList}
+            {...form.getInputProps("major")}
           />
         </Flex>
       </div>

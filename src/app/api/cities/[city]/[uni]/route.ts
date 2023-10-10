@@ -62,7 +62,7 @@ export async function POST(request: Request) {
   
     const successResponse = {
       status: "success",
-      uni,
+      major,
     };
     return new NextResponse(JSON.stringify(successResponse), {
       status: 201,

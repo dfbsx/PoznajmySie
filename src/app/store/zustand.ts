@@ -151,7 +151,6 @@ export const useUserStore = create<appData & { actions: UserActions }>(
         get().actions.setRoomList([...current, roomId]);
       },
       createConnection: async (token) => {
-        console.log("tworzenie połączenia1");
         const connection = new HubConnectionBuilder()
           .withUrl("https://letsmeetapp.azurewebsites.net/chat", {
             accessTokenFactory: () => {
