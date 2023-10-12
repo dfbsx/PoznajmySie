@@ -17,6 +17,7 @@ import {
   IconMapPinFilled,
   IconBooks,
 } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const useStyles = createStyles((theme) => ({
@@ -44,8 +45,9 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function UserDesc({roomId} : any) {
+export default function UserDesc({ roomId }: any) {
   const user = useUserStore((state) => state.currentUser);
+  const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
   const [userPhoto, setUserPhoto] = useState<string | null | undefined>("");
   interface UserData {
@@ -61,7 +63,7 @@ export default function UserDesc({roomId} : any) {
     if (user !== "") {
       getUserDataFromNick(user)
         .then((resp) => {
-          console.log(resp)
+          console.log(resp);
           setUserInfo(resp.data);
           setUserPhoto(`data:image/png;base64,${resp.data.photo}`);
         })
@@ -77,9 +79,11 @@ export default function UserDesc({roomId} : any) {
 
   const deleteConversation = () => {
     deleteRoom(roomId)
-    .then((resp)=>console.log(resp))
-    .catch((err)=>console.log(err))
-  }
+      .then((resp) => {
+        console.log(resp), router.refresh();
+      })
+      .catch((err) => console.log(err));
+  };
 
   const { classes } = useStyles();
 
@@ -95,11 +99,15 @@ export default function UserDesc({roomId} : any) {
         centered
         title="Czy na pewno chcesz usunąć konwersację?"
       >
-        <Group  grow>
+        <Group grow>
           <Button variant="outline" color="dark">
             Anuluj
           </Button>
-          <Button variant="filled" color="red" onClick={()=>deleteConversation()}>
+          <Button
+            variant="filled"
+            color="red"
+            onClick={() => deleteConversation()}
+          >
             Usuń
           </Button>
         </Group>
