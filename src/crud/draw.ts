@@ -1,21 +1,3 @@
-/*import axios from 'axios';
-import API_URL  from './configuration';
-
-export const draw = (data:any,connection:string) => {
-    const user = JSON.parse(localStorage.getItem("PoznajmySie") || "{}");
-    console.log("draw")
-    console.log("url",`${API_URL}/api/Rooms/create?ConnectionId=${connection}${data.university?`&University=${data.university}${data.city||data.gender ? "&" :''}`:``}${data.city? `&City=${data.city}${data.gender?"&":""}`:''}${data.major?`&Major=${data.major}`:``}${data.gender?`&Gender=${data.gender}`:``}`)
-  return axios({
-    method: 'POST',
-    //url: `${API_URL}/api/chat/draw?${uni?`isUniversity=${uni}${city||gender ? "&" :''}`:``}${city? `isCity=${city}${gender?"&":""}`:''}${gender?`gender=${gender}`:``}`,
-    //url:`${API_URL}/api/Rooms/create?ConnectionId=${connection}${data.university?`&University=${data.university}${data.city||data.gender ? "&" :''}`:``}${data.city? `City=${data.city}${data.gender?"&":""}`:''}${data.gender?`Gender=${data.gender}`:``}`,
-    headers: {
-      'Authorization': `Bearer ${user.token}`, 
-      'Content-Type': 'application/json',
-    },
-  },
-  )
-};*/
 import axios from 'axios';
 import API_URL from './configuration';
 
@@ -59,7 +41,7 @@ export const draw = (data: any, connection: string) => {
 
   return axios({
     method: 'POST',
-    //url,
+    url,
     headers: {
       'Authorization': `Bearer ${user.token}`,
       'Content-Type': 'application/json',
