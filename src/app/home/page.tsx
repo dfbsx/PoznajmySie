@@ -44,13 +44,12 @@ function Home() {
   const rooms = useUserStore((state) => state.roomList);
   const currentUser = useUserStore((state) => state.currentUser);
   const router = useRouter();
-  const matches = useMediaQuery("(max-width: 1184px)");
+  const matches = useMediaQuery("(max-width: 1201px)");
   const small = useMediaQuery("(max-width: 550px)");
   const { classes } = useStyles();
   const [userPhoto, setUserPhoto] = useState<string | null | undefined>("home");  
   useEffect(() => {
     const userJSON = localStorage.getItem("PoznajmySie");
-    console.log(rooms)
     const roomsFilter = rooms?.find(room => room.roomName === currentUser);
     setRoomId(roomsFilter?.roomId)
     const user = userJSON ? JSON.parse(userJSON) : null;

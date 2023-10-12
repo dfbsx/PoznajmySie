@@ -13,7 +13,7 @@ import styles from "../register/page.module.css";
 import { useEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { register } from "@/crud/register";
-import { useStoreActions} from "../store/zustand";
+import { useStoreActions } from "../store/zustand";
 import { getCities } from "../localcrud/getCities";
 import { addCity } from "../localcrud/addCity";
 import { getUniByCity } from "../localcrud/getUniByCity";
@@ -35,7 +35,7 @@ export default function Register() {
     city: "",
     university: "",
     major: "",
-    gender: "",
+    gender: 3,
   });
   const form = useForm<RegisterForm>({
     initialValues: registerData,
@@ -53,6 +53,12 @@ export default function Register() {
         value !== values.password ? "Podane hasła się różnią" : null,
     },
   });
+  const majorsList =
+    majors && Object.keys(majors).length > 0
+      ? Object.keys(majors).map((major, i) => {
+          return majors[major].name;
+        })
+      : [];
   useEffect(() => {
     getCities()
       .then((resp) => {
@@ -86,7 +92,7 @@ export default function Register() {
           .catch((err) => console.log(err));
       }
     }
-  }, [form.values.city, form.values.university]);
+  }, [form.values.city, form.values.university, form.values.gender]);
   const router = useRouter();
   type RegisterForm = {
     email: string;
@@ -97,7 +103,7 @@ export default function Register() {
     city: string;
     university: string;
     major: string;
-    gender: string;
+    gender: number;
   };
 
   const handleRegister = (values: RegisterForm) => {
@@ -120,7 +126,7 @@ export default function Register() {
       name: form.values.major,
       Uni: form.values.university,
       City: form.values.city,
-    }
+    };
     if (!citiesList.includes(registerData.city)) {
       addCity(form.values.city)
         .then((resp: any) => console.log(resp))
@@ -131,11 +137,11 @@ export default function Register() {
         .then((resp) => console.log(resp))
         .catch((err) => console.log(err));
     }
-    if(!majorsList.includes(registerData.major)){
-      addMajor(newMajor)
-      .then((resp)=>console.log(resp))
-      .catch((err)=> console.log(err))
-    }
+    majorsList.includes(newMajor.name) === false
+      ? addMajor(newMajor)
+          .then((resp) => console.log(resp))
+          .catch((err) => console.log(err))
+      : null;
     register(values)
       .then((resp) => {
         authenticate(resp.data.userName, resp.data.token);
@@ -160,12 +166,7 @@ export default function Register() {
           return unis[uni].name;
         })
       : [];
-      const majorsList =
-      majors && Object.keys(majors).length > 0
-        ? Object.keys(majors).map((major, i) => {
-            return majors[major].name;
-          })
-        : [];
+
   return (
     <main className={styles.mainLayout}>
       <Group position="right" spacing="md" className={styles.buttons}>
@@ -286,7 +287,7 @@ export default function Register() {
                 data={unisList}
                 {...form.getInputProps("university")}
               />
-               <Autocomplete
+              <Autocomplete
                 label="Kierunek"
                 placeholder="Informatyka"
                 radius="xs"
@@ -300,8 +301,8 @@ export default function Register() {
                 size="md"
                 radius="xs"
                 data={[
-                  { value: "0", label: "Mężczyzna" },
-                  { value: "1", label: "Kobieta" },
+                  { value: Number(0), label: "Mężczyzna" },
+                  { value: Number(1), label: "Kobieta" },
                 ]}
                 {...form.getInputProps("gender")}
               />
@@ -315,5 +316,3 @@ export default function Register() {
     </main>
   );
 }
-
-

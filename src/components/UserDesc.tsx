@@ -61,6 +61,7 @@ export default function UserDesc({roomId} : any) {
     if (user !== "") {
       getUserDataFromNick(user)
         .then((resp) => {
+          console.log(resp)
           setUserInfo(resp.data);
           setUserPhoto(`data:image/png;base64,${resp.data.photo}`);
         })

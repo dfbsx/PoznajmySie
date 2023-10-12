@@ -13,8 +13,9 @@ export async function GET(
       }
     },
   });
+  const allunis = await prisma.uni.findMany({});
 
-  if (!uni) {
+  if (!uni && !allunis) {
     let error_response = {
       status: "fail",
       message: "No uni with the Provided ID Found",
@@ -27,9 +28,11 @@ export async function GET(
 
   let json_response = {
       uni,
+      allunis
   };
   return NextResponse.json(json_response);
 }
+
 
 export async function POST(request: Request) {
   try {

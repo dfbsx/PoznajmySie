@@ -13,6 +13,7 @@ export async function GET(
       }
     },
   });
+  const allMajors = await prisma.major.findMany();
 
   if (!major) {
     let error_response = {
@@ -27,6 +28,7 @@ export async function GET(
 
   let json_response = {
       major,
+      allMajors,
   };
   return NextResponse.json(json_response);
 }

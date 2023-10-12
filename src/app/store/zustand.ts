@@ -1,5 +1,5 @@
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
-import { create, useStore } from "zustand";
+import { create } from "zustand";
 
 type appData = {
   token: string;
@@ -8,6 +8,7 @@ type appData = {
   currentUser: string;
   messages: any[];
   connection: any;
+  connectionId: any;
   roomList: any[];
   isLoading: boolean;
 };
@@ -16,6 +17,7 @@ interface UserActions {
   setAuth: (username: string, token: string) => void;
   setRoomList: (roomList: any[]) => void;
   setConnection: (connection: any) => void;
+  setConnectionId: (connection: any) => void;
   setLoading: (isLoading: boolean) => void;
   setRoomId: (currentRoom: any) => void;
   setMessage: (messages: any[]) => void;
@@ -40,6 +42,7 @@ export const useUserStore = create<appData & { actions: UserActions }>(
     currentUser: "",
     messages: [],
     connection: null,
+    connectionId:null,
     roomList: [],
     isLoading: true,
     actions: {
@@ -55,6 +58,10 @@ export const useUserStore = create<appData & { actions: UserActions }>(
       setConnection: (connection) =>
         set({
           connection,
+        }),
+      setConnectionId: (connectionId) =>
+        set({
+          connectionId,
         }),
       setLoading: (isLoading) =>
         set({
@@ -111,7 +118,7 @@ export const useUserStore = create<appData & { actions: UserActions }>(
         get().actions.setLoading(true);
         const current = get().currentRoom;
         if (current !== null) {
-          console.log("teraz", current)
+          console.log("teraz", current);
           await get().actions.leaveRoom();
         }
         const connection = get().connection;
@@ -179,6 +186,7 @@ export const useUserStore = create<appData & { actions: UserActions }>(
 
         connection.start().then(() => {
           get().actions.setConnection(connection);
+          get().actions.setConnectionId(connection?.connectionId);
           get().actions.getRooms();
         });
       },

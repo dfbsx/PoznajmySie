@@ -24,8 +24,6 @@ import { changeUserPhoto } from "@/crud/changeUserPhoto";
 import { getCities } from "../localcrud/getCities";
 import { getUniByCity } from "../localcrud/getUniByCity";
 import { getMajorByUni } from "../localcrud/getMajorByUni";
-import { getUnis } from "../localcrud/getUnis";
-import { getMajor } from "../localcrud/getMajor";
 import { useForm } from "@mantine/form";
 
 export interface UserData {
@@ -54,7 +52,7 @@ function Edit() {
     university: "",
     major: "",
   });
-  const form = useForm<UserData>({
+  const form = useForm({
     initialValues: userData,
   });
 
@@ -64,6 +62,7 @@ function Edit() {
     getUserData(user.token)
       .then((resp) => {
         setUserData(resp.data);
+        console.log(resp.data);
         setUserPhoto(`data:image/png;base64,${resp.data.photo}`);
         setIsLoading(false);
       })
@@ -75,7 +74,6 @@ function Edit() {
             : "Wystąpił nieznany błąd"
         );
       });
-    console.log("userdata", userData);
     getCities()
       .then((resp) => setCities(resp.data.cities))
       .catch((err) => console.log(err));
@@ -84,25 +82,33 @@ function Edit() {
     getUniByCity(selectedCity)
       .then((resp) => {
         setUnis(resp.data.uni);
-        console.log(resp.data.uni);
-        console.log(selectedCity);
       })
       .catch((err) => console.log(err));
-      const getMajors = {
-        city: form.values.city===""?userData.city:form.values.city,
-        university: form.values.university===""?userData.university:form.values.university,
-      };
+    const getMajors = {
+      city: form.values.city === "" ? userData.city : form.values.city,
+      university:
+        form.values.university === ""
+          ? userData.university
+          : form.values.university,
+    };
     getMajorByUni(getMajors)
       .then((resp) => {
-        setMajors(resp.data.major)
+        setMajors(resp.data.major);
       })
       .catch((err) => console.log(err));
-
   }, [refresh, form.values]);
 
-  const handleUpdateData = () => {
-    updateUserData(userData, token)
+  const handleUpdateData = (values: any) => {
+    let newData = {
+      userName: userData.userName,
+      bio: values.bio,
+      city: values.city,
+      university: values.university,
+      major: values.major,
+    };
+    updateUserData(newData, token)
       .then(() => {
+        console.log("weszło", newData);
         router.back();
       })
       .catch((error: any) => {
@@ -188,47 +194,50 @@ function Edit() {
             {userData.userName}
           </Text>
         </div>
-        <Flex
-          className={styles.dataColumn}
-          align="flex-start"
-          justify="space-between"
-          gap="xl"
-        >
-          <TextInput
-            className={styles.input}
-            label="Bio"
-            size="md"
-            value={userData.bio}
-            onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
-          />
-          <Autocomplete
-            className={styles.input}
-            label="Miasto"
-            placeholder={userData.city}
-            radius="xs"
-            size="md"
-            data={citiesList}
-            {...form.getInputProps("city")}
-          />
-          <Autocomplete
-            className={styles.input}
-            label="Uczelnia"
-            placeholder={userData.university}
-            radius="xs"
-            size="md"
-            data={unisList}
-            {...form.getInputProps("university")}
-          />
-          <Autocomplete
-            className={styles.input}
-            label="Kierunek"
-            placeholder={userData.major}
-            radius="xs"
-            size="md"
-            data={majorsList}
-            {...form.getInputProps("major")}
-          />
-        </Flex>
+        <form>
+          <Flex
+            className={styles.dataColumn}
+            align="flex-start"
+            justify="space-between"
+            gap="xl"
+          >
+            <TextInput
+              className={styles.input}
+              label="Bio"
+              size="md"
+              placeholder={userData.bio}
+              {...form.getInputProps("bio")}
+            />
+
+            <Autocomplete
+              className={styles.input}
+              label="Miasto"
+              placeholder={userData.city}
+              radius="xs"
+              size="md"
+              data={citiesList}
+              {...form.getInputProps("city")}
+            />
+            <Autocomplete
+              className={styles.input}
+              label="Uczelnia"
+              placeholder={userData.university}
+              radius="xs"
+              size="md"
+              data={unisList}
+              {...form.getInputProps("university")}
+            />
+            <Autocomplete
+              className={styles.input}
+              label="Kierunek"
+              placeholder={userData.major}
+              radius="xs"
+              size="md"
+              data={majorsList}
+              {...form.getInputProps("major")}
+            />
+          </Flex>
+        </form>
       </div>
       <Group className={styles.buttons} position="right" spacing="xl">
         <Button
@@ -244,7 +253,7 @@ function Edit() {
           className={styles.button}
           color="dark"
           radius="xs"
-          onClick={handleUpdateData}
+          onClick={() => handleUpdateData(form.values)}
         >
           Zapisz zmiany
         </Button>
