@@ -49,6 +49,7 @@ export default function UserDesc({ roomId }: any) {
   const user = useUserStore((state) => state.currentUser);
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
+  const [isRefreshing, setRefreshing] = useState(false);
   const [userPhoto, setUserPhoto] = useState<string | null | undefined>("");
   interface UserData {
     userName: string;
@@ -61,6 +62,8 @@ export default function UserDesc({ roomId }: any) {
 
   useEffect(() => {
     if (user !== "") {
+      setRefreshing(false);
+      console.log(isRefreshing)
       getUserDataFromNick(user)
         .then((resp) => {
           console.log(resp);
@@ -75,12 +78,15 @@ export default function UserDesc({ roomId }: any) {
           }
         });
     }
-  }, [user]);
+  }, [user,isRefreshing]);
 
   const deleteConversation = () => {
     deleteRoom(roomId)
       .then((resp) => {
-        console.log(resp), router.refresh();
+        setRefreshing(true);
+        //window.location.reload();
+        router.refresh();
+        close();
       })
       .catch((err) => console.log(err));
   };
