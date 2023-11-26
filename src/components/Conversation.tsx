@@ -26,7 +26,7 @@ function Conversation({ room }: any) {
     getUserDataFromNick(room?.roomName)
     .then((resp)=> setUserPhoto(`data:image/png;base64,${resp.data.photo}`))
     .catch((err)=>console.log(err))
-  }, [room?.roomName]);
+  }, [room?.roomName, room?.lastMessage]);
   const { classes } = useStyles();
   const { join, setThisUser, setUser } = useStoreActions();
   const user = useUserStore((state)=>state.currentUser)

@@ -62,7 +62,6 @@ function Edit() {
     getUserData(user.token)
       .then((resp) => {
         setUserData(resp.data);
-        console.log(resp.data);
         setUserPhoto(`data:image/png;base64,${resp.data.photo}`);
         setIsLoading(false);
       })

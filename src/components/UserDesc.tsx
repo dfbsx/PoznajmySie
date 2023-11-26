@@ -63,10 +63,8 @@ export default function UserDesc({ roomId }: any) {
   useEffect(() => {
     if (user !== "") {
       setRefreshing(false);
-      console.log(isRefreshing)
       getUserDataFromNick(user)
         .then((resp) => {
-          console.log(resp);
           setUserInfo(resp.data);
           setUserPhoto(`data:image/png;base64,${resp.data.photo}`);
         })
@@ -78,14 +76,13 @@ export default function UserDesc({ roomId }: any) {
           }
         });
     }
-  }, [user,isRefreshing]);
+  }, [user, isRefreshing]);
 
   const deleteConversation = () => {
     deleteRoom(roomId)
       .then((resp) => {
         setRefreshing(true);
-        //window.location.reload();
-        router.refresh();
+        window.location.reload();
         close();
       })
       .catch((err) => console.log(err));

@@ -34,7 +34,6 @@ export default function Page() {
   const handleChangePassword = () => {
     changePassword(form.values, token, id)
       .then((resp) => {
-        console.log(resp);
         router.push("/login");
         setError({ status: false, text: "" });
       })

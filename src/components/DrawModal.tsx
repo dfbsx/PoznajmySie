@@ -54,7 +54,6 @@ export default function DrawModal() {
   const handleDraw = () => {
     draw(form.values, connection)
       .then((resp) => {
-        console.log("to dostaliśmy", resp.data);
         getRooms();
         join(resp.data.roomId);
       })
