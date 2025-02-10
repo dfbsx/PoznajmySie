@@ -1,1 +1,1 @@
-export default 'https://letsmeetapp.azurewebsites.net'
+export default 'https://letsmeetapi.azurewebsites.net'
