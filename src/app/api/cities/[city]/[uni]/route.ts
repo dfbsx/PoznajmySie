@@ -3,64 +3,56 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { city: string; uni: string } }
+  { params }: { params: { uni: string } }
 ) {
-  try {
-    const { city, uni } = params;
+  const uni = params.uni;
+  const major = await prisma.major.findMany({
+    where: {
+      Uni:{
+        name:uni,
+      }
+    },
+  });
+  const allMajors = await prisma.major.findMany();
 
-    if (!city || !uni) {
-      return NextResponse.json(
-        { status: "fail", message: "City and university are required" },
-        { status: 400 }
-      );
-    }
-
-    console.log(`Fetching majors for university: ${uni} in city: ${city}`);
-
-    const major = await prisma.major.findMany({
-      where: {
-        Uni: { name: uni },
-      },
+  if (!major) {
+    let error_response = {
+      status: "fail",
+      message: "No uni with the Provided ID Found",
+    };
+    return new NextResponse(JSON.stringify(error_response), {
+      status: 404,
+      headers: { "Content-Type": "application/json" },
     });
-
-    if (!major.length) {
-      return NextResponse.json(
-        { status: "fail", message: "No majors found for the given university" },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json({ status: "success", major });
-  } catch (error: any) {
-    console.error("Error in GET /api/cities/[city]/[uni]:", error);
-    return NextResponse.json(
-      { status: "error", message: "Internal server error" },
-      { status: 500 }
-    );
   }
+
+  let json_response = {
+      major,
+      allMajors,
+  };
+  return NextResponse.json(json_response);
 }
 
 export async function POST(request: Request) {
   try {
     const json = await request.json();
-
-    if (!json.Uni?.trim() || !json.name?.trim()) {
-      return NextResponse.json(
-        { status: "fail", message: "Invalid input. City and university name are required." },
-        { status: 400 }
-      );
+    if (!json.Uni || !json.name) {
+      const errorResponse = {
+        status: "fail",
+        message: "City name and uni name are required in the input data",
+        data: json,
+      };
+      return new NextResponse(JSON.stringify(errorResponse), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
     }
-
-    console.log("Creating or updating university:", json.Uni);
-
     const uni = await prisma.uni.upsert({
-      where: { name: json.Uni },
-      create: { name: json.Uni },
-      update: { name: json.Uni },
+      where: { name: json.Uni},
+      create: { name: json.Uni},
+      update: { name: json.Uni},
     });
-
-    console.log("Creating major:", json.name);
-
+  
     const major = await prisma.major.create({
       data: {
         name: json.name,
@@ -69,24 +61,34 @@ export async function POST(request: Request) {
         },
       },
     });
-
-    return NextResponse.json(
-      { status: "success", major },
-      { status: 201 }
-    );
+  
+    const successResponse = {
+      status: "success",
+      major,
+    };
+    return new NextResponse(JSON.stringify(successResponse), {
+      status: 201,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error: any) {
-    console.error("Error in POST /api/cities/[city]/[uni]:", error);
-
     if (error.code === "P2002") {
-      return NextResponse.json(
-        { status: "fail", message: "A university with the same name already exists" },
-        { status: 409 }
-      );
+      const errorResponse = {
+        status: "fail",
+        message: "uni with the same name already exists",
+      };
+      return new NextResponse(JSON.stringify(errorResponse), {
+        status: 409,
+        headers: { "Content-Type": "application/json" },
+      });
     }
-
-    return NextResponse.json(
-      { status: "error", message: "Internal server error" },
-      { status: 500 }
-    );
+  
+    const errorResponse = {
+      status: "error",
+      message: error.message,
+    };
+    return new NextResponse(JSON.stringify(errorResponse), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
