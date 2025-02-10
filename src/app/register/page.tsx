@@ -301,8 +301,8 @@ export default function Register() {
                 size="md"
                 radius="xs"
                 data={[
-                  { value: 0, label: "Mężczyzna" },
-                  { value: 1, label: "Kobieta" },
+                  { value: "0", label: "Mężczyzna" },
+                  { value: "1", label: "Kobieta" },
                 ]}
                 {...form.getInputProps("gender")}
               />
