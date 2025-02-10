@@ -32,5 +32,8 @@
   },
   "devDependencies": {
     "prisma": "^6.2.1"
-  }
+  },
+  "prisma": {
+  "generate": "prisma generate"
+}
 }
