@@ -36,6 +36,7 @@ export default function HoverInfo() {
     if (user !== "") {
       getUserDataFromNick(user)
         .then((resp) => {
+          console.log("resp",resp)
           setUserInfo(resp.data);
         })
         .catch((err) => {
