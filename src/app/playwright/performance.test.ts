@@ -59,7 +59,7 @@ test('Zaloguj się i wykonaj audyt Lighthouse na stronach aplikacji', async ({ p
     // Zaloguj się na stronie logowania
     await page.goto(loginUrl);
     const username = 'ulala';
-    const password = 'Haslo+123';
+    const password = process.env.pass;
 
     await page.fill('input[placeholder="email@example.com"]', username);  // Wypełnij pole username
     await page.fill('input[placeholder="*****"]', password);
