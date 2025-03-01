@@ -17,7 +17,7 @@ describe('login function', () => {
     // Mockujemy odpowiedź dla zapytania POST na /api/Accounts/signIn
     mock.onPost(`${API_URL}/api/Accounts/signIn`).reply(200, mockResponse);
 
-    const data = { username: 'user', password: 'password123' };
+    const data = { username: 'user', password: process.env.testPass };
 
     // Wywołanie funkcji login
     const response = await login(data);
@@ -37,7 +37,7 @@ describe('login function', () => {
     // Mockujemy odpowiedź z błędem
     mock.onPost(`${API_URL}/api/Accounts/signIn`).reply(500, { message: errorMessage });
 
-    const data = { username: 'user', password: 'password123' };
+    const data = { username: 'user', password: process.env.testPass };
 
     // Wywołanie funkcji login
     try {

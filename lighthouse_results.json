@@ -1,0 +1,41 @@
+[
+  {
+    "url": "https://poznajmy-sie.vercel.app/login",
+    "performanceScore": 0.86,
+    "accessibilityScore": 0.97,
+    "seoScore": 0.8,
+    "bestPracticesScore": 1,
+    "pwaScore": 0.3,
+    "firstContentfulPaint": "0.9 s",
+    "speedIndex": "1.3 s",
+    "interactive": "1.7 s",
+    "totalBlockingTime": "30 ms",
+    "cumulativeLayoutShift": "0.824"
+  },
+  {
+    "url": "https://poznajmy-sie.vercel.app/home",
+    "performanceScore": 0.82,
+    "accessibilityScore": 0.97,
+    "seoScore": 0.8,
+    "bestPracticesScore": 0.92,
+    "pwaScore": 0.3,
+    "firstContentfulPaint": "0.8 s",
+    "speedIndex": "0.8 s",
+    "interactive": "2.8 s",
+    "totalBlockingTime": "20 ms",
+    "cumulativeLayoutShift": "0.578"
+  },
+  {
+    "url": "https://poznajmy-sie.vercel.app/edit",
+    "performanceScore": 0.86,
+    "accessibilityScore": 0.97,
+    "seoScore": 0.8,
+    "bestPracticesScore": 0.92,
+    "pwaScore": 0.3,
+    "firstContentfulPaint": "0.8 s",
+    "speedIndex": "2.2 s",
+    "interactive": "2.8 s",
+    "totalBlockingTime": "50 ms",
+    "cumulativeLayoutShift": "0.32"
+  }
+]
