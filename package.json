@@ -29,7 +29,7 @@
     "immer": "^10.0.2",
     "lighthouse": "^12.2.0",
     "next": "^14.2.15",
-    "playwright": "^1.50.1",
+    "playwright": "^1.51.0",
     "puppeteer": "^24.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
